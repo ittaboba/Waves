@@ -18,7 +18,23 @@ class HomeViewController: UIViewController {
                                          height: SharedValues.shared.getHomeView().getHeight()))
         self.view.backgroundColor = SharedValues.shared.getHomeView().getBackgroundColor()
         
-        
+        let difficultySegmentedControl = DifficultySegmentedControl(frame: CGRect(x: 250, y: 50, width: 300, height: 40),
+                                                          levels: DifficultyLevel.levels)
+        difficultySegmentedControl.delegate = self
+        self.view.addSubview(difficultySegmentedControl)
+    }
+}
+
+extension HomeViewController: DifficultySegmentedControlDelegate {
+    func difficultyLevelChanged(level: DifficultyLevel) {
+        switch level {
+        case .Easy:
+            print("easy")
+        case .Medium:
+            print("medium")
+        case .Hard:
+            print("hard")
+        }
     }
 }
 
