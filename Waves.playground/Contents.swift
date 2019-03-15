@@ -3,6 +3,8 @@ import PlaygroundSupport
 
 class HomeViewController: UIViewController {
     
+    private var difficultyLevel: DifficultyLevel = .Easy
+    
     public init() {
         super.init(nibName: nil, bundle: nil)
     }
@@ -27,14 +29,7 @@ class HomeViewController: UIViewController {
 
 extension HomeViewController: DifficultySegmentedControlDelegate {
     func difficultyLevelChanged(level: DifficultyLevel) {
-        switch level {
-        case .Easy:
-            print("easy")
-        case .Medium:
-            print("medium")
-        case .Hard:
-            print("hard")
-        }
+        self.difficultyLevel = level
     }
 }
 
