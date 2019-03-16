@@ -1,6 +1,12 @@
 import UIKit
 
+public protocol InstrumentSegmentedControlDelegate: class {
+    func instrumentChanged(instrument: Instrument)
+}
+
 public class InstrumentSegmentedControl: UIControl {
+    
+    public weak var delegate: InstrumentSegmentedControlDelegate?
     
     private var icons = [UIImageView]()
     private var instruments = [Instrument]()
@@ -9,6 +15,7 @@ public class InstrumentSegmentedControl: UIControl {
     
     private var selectedIndex: Int = 0 {
         didSet {
+            self.delegate?.instrumentChanged(instrument: self.instruments[selectedIndex])
             self.displayNewSelectedIndex()
         }
     }
@@ -56,7 +63,7 @@ public class InstrumentSegmentedControl: UIControl {
         self.backgroundColor = .clear
         
         for index in 1 ... self.instruments.count {
-            let icon = UIImageView(frame: CGRect(x: 40 * (index - 1), y: 0, width: 20, height: 20))
+            let icon = UIImageView(frame: CGRect(x: 120 * (index - 1) + 40, y: 40, width: 40, height: 40))
             icon.image = UIImage(named: "icon.png")
             icon.image = icon.image?.withRenderingMode(.alwaysTemplate)
             icon.tintColor = index == 0 ? self.selectedIconColor : self.unselectedIconColor
@@ -75,7 +82,7 @@ public class InstrumentSegmentedControl: UIControl {
         selectFrame.size.width = newWidth
         self.thumbView.frame = selectFrame
         
-        self.thumbShape = self.instruments[0].getShape() as! Circle
+        self.setThumbShape(atSelectedIndex: self.selectedIndex)
         
         self.displayNewSelectedIndex()
     }
@@ -107,17 +114,23 @@ public class InstrumentSegmentedControl: UIControl {
         icon.tintColor = self.selectedIconColor
         
         UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.8, options: [], animations: {
-            self.thumbView.frame = CGRect(x: icon.frame.origin.x - 10, y: icon.frame.origin.y - 10, width: 40, height: 40)
+            self.thumbView.frame = CGRect(x: icon.frame.origin.x - 20, y: icon.frame.origin.y - 20, width: 120, height: 120)
             
             self.thumbColor = self.instruments[self.selectedIndex].getShape().getColor()
             
-            if self.instruments[self.selectedIndex].getShape() is Circle {
-                self.thumbShape = self.instruments[self.selectedIndex].getShape() as! Circle
-            } else if self.instruments[self.selectedIndex].getShape() is Square {
-                self.thumbShape = self.instruments[self.selectedIndex].getShape() as! Square
-            }
+            self.setThumbShape(atSelectedIndex: self.selectedIndex)
             
         }, completion: nil)
+    }
+    
+    private func setThumbShape(atSelectedIndex index: Int) {
+        if self.instruments[index].getShape() is Circle {
+            self.thumbShape = self.instruments[index].getShape() as! Circle
+        } else if self.instruments[index].getShape() is Square {
+            self.thumbShape = self.instruments[index].getShape() as! Square
+        } else if self.instruments[index].getShape() is Triangle {
+            self.thumbShape = self.instruments[index].getShape() as! Triangle
+        }
     }
     
     private func setSelectedColors() {
