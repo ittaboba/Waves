@@ -8,7 +8,7 @@ public class Circle: Shape {
         }
     }
     
-    public required init(diameter: CGFloat, color: UIColor) {
+    public required init(diameter: CGFloat, color: Color) {
         super.init(color: color)
         self.path = Circle.path(radius: diameter/2).cgPath
     }
@@ -17,7 +17,7 @@ public class Circle: Shape {
         super.init(coder: aDecoder)
     }
     
-    required public init(color: UIColor) {
+    required public init(color: Color) {
         super.init(color: color)
     }
     

@@ -8,7 +8,7 @@ public class Triangle: Shape {
         }
     }
     
-    required public init(size: CGSize, color: UIColor) {
+    required public init(size: CGSize, color: Color) {
         super.init(color: color)
         self.path = Triangle.path(size: size)
     }
@@ -17,7 +17,7 @@ public class Triangle: Shape {
         super.init(coder: aDecoder)
     }
     
-    required public init(color: UIColor) {
+    required public init(color: Color) {
         super.init(color: color)
     }
     

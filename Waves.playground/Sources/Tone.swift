@@ -11,8 +11,22 @@ public class Tone: UIView {
         
         super.init(frame: frame)
         
-        if let _ = note {
-            self.backgroundColor = instrument.getType().getShape().getColor()
+        if let n = note {
+            let instrumentHue = instrument.getType().getShape().getColor().getHue()
+            
+            let allNotes = Pitch.shared.getNotes(forOctaves: .four)
+            
+            if let index = allNotes.firstIndex(of: n) {
+                let octave = CGFloat(index/7 + 1)
+                let octaveNote = CGFloat(index % 7)
+                
+                let saturation = CGFloat(100 - octave * 20)
+                let value = CGFloat(100 - octaveNote * 10)
+                
+                let toneColor = Color(hue: instrumentHue, saturation: saturation, value: value)
+                
+                self.backgroundColor = toneColor.toRGBColor()
+            }
         } else {
             self.backgroundColor = .gray
         }
@@ -25,6 +39,7 @@ public class Tone: UIView {
     }
     
     private func setMask(forShape shape: Shape, size: CGSize) {
+        print(shape)
         if shape is Circle {
             let newShape = shape as! Circle
             newShape.setDiameter(diameter: size.width)
@@ -40,7 +55,7 @@ public class Tone: UIView {
         }
     }
     
-    public func isMute() -> Bool {
+    public func isPlaceholder() -> Bool {
         if let _ = self.note {
             return false
         }

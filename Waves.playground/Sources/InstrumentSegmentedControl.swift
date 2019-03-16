@@ -38,7 +38,7 @@ public class InstrumentSegmentedControl: UIControl {
         }
     }
     
-    private var thumbShape = Shape(color: .black) {
+    private var thumbShape = Shape(color: Color(hue: 0, saturation: 0, value: 0)) {
         didSet {
             self.thumbView.layer.mask = self.thumbShape
         }
@@ -113,7 +113,7 @@ public class InstrumentSegmentedControl: UIControl {
         UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.8, options: [], animations: {
             self.thumbView.frame = CGRect(x: icon.frame.origin.x - 40, y: icon.frame.origin.y - 40, width: 120, height: 120)
             
-            self.thumbColor = self.instruments[self.selectedIndex].getType().getShape().getColor()
+            self.thumbColor = self.instruments[self.selectedIndex].getType().getShape().getColor().toRGBColor()
             
             self.setThumbShape(atSelectedIndex: self.selectedIndex)
             

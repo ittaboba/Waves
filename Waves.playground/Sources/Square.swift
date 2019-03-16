@@ -8,7 +8,7 @@ public class Square: Shape {
         }
     }
         
-    required public init(size: CGSize, color: UIColor) {
+    required public init(size: CGSize, color: Color) {
         super.init(color: color)
         self.path = Square.path(size: size).cgPath
     }
@@ -17,7 +17,7 @@ public class Square: Shape {
         super.init(coder: aDecoder)
     }
     
-    required public init(color: UIColor) {
+    required public init(color: Color) {
         super.init(color: color)
     }
     

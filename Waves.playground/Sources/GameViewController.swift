@@ -140,7 +140,7 @@ extension GameViewController: UICollectionViewDelegate {
             self.selectedTone = self.tones[indexPath.item]
             
         } else {
-            if self.placeholders[indexPath.item].isMute() {
+            if self.placeholders[indexPath.item].isPlaceholder() {
                 if let tone = self.selectedTone {
                     let newTone = tone.clone()
                     self.placeholders[indexPath.item] = newTone

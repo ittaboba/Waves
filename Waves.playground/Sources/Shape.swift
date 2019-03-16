@@ -3,13 +3,13 @@ import SpriteKit
 
 public class Shape: CAShapeLayer {
     
-    private var color: UIColor {
+    private var color: Color {
         didSet {
-            self.fillColor = self.color.cgColor
+            self.fillColor = self.color.toRGBColor().cgColor
         }
     }
     
-    public required init(color: UIColor) {
+    public required init(color: Color) {
         self.color = color
         super.init()
     }
@@ -18,7 +18,7 @@ public class Shape: CAShapeLayer {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func getColor() -> UIColor {
+    public func getColor() -> Color {
         return self.color
     }
     
