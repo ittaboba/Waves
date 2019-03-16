@@ -1,7 +1,7 @@
 import UIKit
 
 public protocol InstrumentSegmentedControlDelegate: class {
-    func instrumentChanged(instrument: Instrument)
+    func instrumentChanged(instrumentType: InstrumentType)
 }
 
 public class InstrumentSegmentedControl: UIControl {
@@ -15,7 +15,7 @@ public class InstrumentSegmentedControl: UIControl {
     
     private var selectedIndex: Int = 0 {
         didSet {
-            self.delegate?.instrumentChanged(instrument: self.instruments[selectedIndex])
+            self.delegate?.instrumentChanged(instrumentType: self.instruments[selectedIndex].getType())
             self.displayNewSelectedIndex()
         }
     }
@@ -40,10 +40,7 @@ public class InstrumentSegmentedControl: UIControl {
     
     private var thumbShape = Shape(color: .black) {
         didSet {
-            let layer = CAShapeLayer()
-            layer.path = self.thumbShape.path
-            layer.position = CGPoint(x: 20, y: 20)
-            self.thumbView.layer.mask = layer
+            self.thumbView.layer.mask = self.thumbShape
         }
     }
     
@@ -116,7 +113,7 @@ public class InstrumentSegmentedControl: UIControl {
         UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.8, options: [], animations: {
             self.thumbView.frame = CGRect(x: icon.frame.origin.x - 20, y: icon.frame.origin.y - 20, width: 120, height: 120)
             
-            self.thumbColor = self.instruments[self.selectedIndex].getShape().getColor()
+            self.thumbColor = self.instruments[self.selectedIndex].getType().getShape().getColor()
             
             self.setThumbShape(atSelectedIndex: self.selectedIndex)
             
@@ -124,12 +121,12 @@ public class InstrumentSegmentedControl: UIControl {
     }
     
     private func setThumbShape(atSelectedIndex index: Int) {
-        if self.instruments[index].getShape() is Circle {
-            self.thumbShape = self.instruments[index].getShape() as! Circle
-        } else if self.instruments[index].getShape() is Square {
-            self.thumbShape = self.instruments[index].getShape() as! Square
-        } else if self.instruments[index].getShape() is Triangle {
-            self.thumbShape = self.instruments[index].getShape() as! Triangle
+        if self.instruments[index].getType().getShape() is Circle {
+            self.thumbShape = self.instruments[index].getType().getShape() as! Circle
+        } else if self.instruments[index].getType().getShape() is Square {
+            self.thumbShape = self.instruments[index].getType().getShape() as! Square
+        } else if self.instruments[index].getType().getShape() is Triangle {
+            self.thumbShape = self.instruments[index].getType().getShape() as! Triangle
         }
     }
     

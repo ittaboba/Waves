@@ -4,7 +4,7 @@ public class Square: Shape {
         
     required public init(size: CGSize, color: UIColor) {
         super.init(color: color)
-        self.path = Square.path(size: size)
+        self.path = Square.path(size: size).cgPath
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -15,13 +15,16 @@ public class Square: Shape {
         super.init(color: color)
     }
     
-    class func path(size: CGSize) -> CGMutablePath {
-        let path = CGMutablePath()
+    class func path(size: CGSize) -> UIBezierPath {
+        let path = UIBezierPath()
+    
         path.move(to: CGPoint(x: -size.width/2, y: -size.height/2))
         path.addLine(to: CGPoint(x: size.width/2, y: -size.height/2))
         path.addLine(to: CGPoint(x: size.width/2, y: size.height/2))
         path.addLine(to: CGPoint(x: -size.width/2, y: size.height/2))
         path.addLine(to: CGPoint(x: -size.width/2, y: -size.height/2))
+ 
+        path.close()
         return path
     }
 }

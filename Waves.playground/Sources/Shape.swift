@@ -1,11 +1,11 @@
 import UIKit
 import SpriteKit
 
-public class Shape: SKShapeNode {
+public class Shape: CAShapeLayer {
     
     private var color: UIColor {
         didSet {
-            self.fillColor = self.color
+            self.fillColor = self.color.cgColor
         }
     }
     

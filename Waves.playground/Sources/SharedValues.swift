@@ -38,10 +38,13 @@ public struct View {
 
 enum ViewType {
     case Home
+    case Game
     
     func get() -> View {
         switch self {
         case .Home:
+            return View(x: 0, y: 0, width: 800, height: 500, backgroundColor: .white)
+        case .Game:
             return View(x: 0, y: 0, width: 800, height: 500, backgroundColor: .white)
         }
     }
@@ -54,5 +57,10 @@ public class SharedValues {
     private let homeView = ViewType.Home.get()
     public func getHomeView() -> View {
         return self.homeView
+    }
+    
+    private let gameView = ViewType.Game.get()
+    public func getGameView() -> View {
+        return self.gameView
     }
 }
