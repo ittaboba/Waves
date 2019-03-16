@@ -4,6 +4,7 @@ import PlaygroundSupport
 class HomeViewController: UIViewController {
     
     private var difficultyLevel: DifficultyLevel = .Easy
+    private var instruments = [Instrument]()
     
     public init() {
         super.init(nibName: nil, bundle: nil)
@@ -24,6 +25,15 @@ class HomeViewController: UIViewController {
                                                           levels: DifficultyLevel.levels)
         difficultySegmentedControl.delegate = self
         self.view.addSubview(difficultySegmentedControl)
+        
+        self.instruments = [
+            Instrument(withType: .Piano, shape: Circle(diameter: 40, color: .red)),
+            Instrument(withType: .Guitar, shape: Square(size: CGSize(width: 40, height: 40), color: .green))
+        ]
+        let instrumentSegmentedControl = InstrumentSegmentedControl(frame: CGRect(x: 250, y: 200, width: 80, height: 40),
+                                                                    instruments: self.instruments)
+        self.view.addSubview(instrumentSegmentedControl)
+ 
     }
 }
 

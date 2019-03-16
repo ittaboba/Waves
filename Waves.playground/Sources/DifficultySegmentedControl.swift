@@ -1,15 +1,5 @@
 import UIKit
 
-public enum DifficultyLevel: String {
-    case Easy = "Easy"
-    case Medium = "Medium"
-    case Hard = "Hard"
-    
-    public static var levels: [DifficultyLevel] {
-        return [.Easy, .Medium, .Hard]
-    }
-}
-
 public protocol DifficultySegmentedControlDelegate: class {
     func difficultyLevelChanged(level: DifficultyLevel)
 }
@@ -17,6 +7,11 @@ public protocol DifficultySegmentedControlDelegate: class {
 public class DifficultySegmentedControl: UIControl {
     
     public weak var delegate: DifficultySegmentedControlDelegate?
+
+    private var labels = [UILabel]()
+    private var levels = [DifficultyLevel]()
+    
+    private var thumbView = UIView()
     
     private var selectedIndex: Int = 0 {
         didSet {
@@ -24,22 +19,19 @@ public class DifficultySegmentedControl: UIControl {
             self.displayNewSelectedIndex()
         }
     }
-    
-    private var labels = [UILabel]()
+
     private var selectedLabelColor = UIColor.black {
         didSet {
             self.setSelectedColors()
         }
     }
+
     private var unselectedLabelColor = UIColor.black {
         didSet {
             self.setSelectedColors()
         }
     }
     
-    private var levels = [DifficultyLevel]()
-    
-    private var thumbView = UIView()
     private var thumbColor = UIColor.yellow {
         didSet {
             self.setSelectedColors()
@@ -118,7 +110,7 @@ public class DifficultySegmentedControl: UIControl {
         }
         
         let label = labels[selectedIndex]
-        label.textColor = selectedLabelColor
+        label.textColor = self.selectedLabelColor
         
         UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.8, options: [], animations: {
             self.thumbView.frame = label.frame
