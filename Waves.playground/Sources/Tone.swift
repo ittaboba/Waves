@@ -39,7 +39,6 @@ public class Tone: UIView {
     }
     
     private func setMask(forShape shape: Shape, size: CGSize) {
-        print(shape)
         if shape is Circle {
             let newShape = shape as! Circle
             newShape.setDiameter(diameter: size.width)

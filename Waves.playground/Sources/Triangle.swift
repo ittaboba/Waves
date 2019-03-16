@@ -4,13 +4,13 @@ public class Triangle: Shape {
     
     private var size = CGSize(width: 0, height: 0) {
         didSet {
-            self.path = Triangle.path(size: self.size)
+            self.path = Triangle.path(size: self.size).cgPath
         }
     }
     
     required public init(size: CGSize, color: Color) {
         super.init(color: color)
-        self.path = Triangle.path(size: size)
+        self.path = Triangle.path(size: size).cgPath
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -25,8 +25,8 @@ public class Triangle: Shape {
         self.size = size
     }
     
-    class func path(size: CGSize) -> CGMutablePath {
-        let path: CGMutablePath = CGMutablePath()
+    class func path(size: CGSize) -> UIBezierPath {
+        let path = UIBezierPath()
         
         path.move(to: CGPoint(x: 0, y: 0))
         

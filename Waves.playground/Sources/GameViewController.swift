@@ -40,14 +40,11 @@ public class GameViewController: UIViewController {
         case .Easy:
             self.levelNotes = gameDifficulty.setGame(withDifficultyLevel: Easy())
             allNotes = Pitch.shared.getNotes(forOctaves: .one)
-            
         case .Medium:
             self.levelNotes = gameDifficulty.setGame(withDifficultyLevel: Medium())
-            
             allNotes = Pitch.shared.getNotes(forOctaves: .two)
         case .Hard:
             self.levelNotes = gameDifficulty.setGame(withDifficultyLevel: Hard())
-            
             allNotes = Pitch.shared.getNotes(forOctaves: .four)
         }
         
@@ -76,23 +73,23 @@ public class GameViewController: UIViewController {
     }
     
     override public func loadView() {
-        self.view = UIView(frame: CGRect(x: SharedValues.shared.getGameView().getX(),
-                                         y: SharedValues.shared.getGameView().getY(),
-                                         width: SharedValues.shared.getGameView().getWidth(),
-                                         height: SharedValues.shared.getGameView().getHeight()))
-        self.view.backgroundColor = SharedValues.shared.getGameView().getBackgroundColor()
+        self.view = UIView(frame: CGRect(x: SharedValues.shared().getGameView().getX(),
+                                         y: SharedValues.shared().getGameView().getY(),
+                                         width: SharedValues.shared().getGameView().getWidth(),
+                                         height: SharedValues.shared().getGameView().getHeight()))
+        self.view.backgroundColor = SharedValues.shared().getGameView().getBackgroundColor()
         
         // tones collection view
         let tonesCollectionView = UICollectionView(frame: CGRect(x: 50, y: 200, width: 600, height: 300),
                                                    collectionViewLayout: UICollectionViewFlowLayout())
-        tonesCollectionView.backgroundColor = .clear
+        tonesCollectionView.backgroundColor = .black
         self.view.addSubview(tonesCollectionView)
         self.tonesCollectionView = tonesCollectionView
         
         // placeholders collection view
         let placeholdersCollectionView = UICollectionView(frame: CGRect(x: 50, y: 50, width: 600, height: 100),
                                                            collectionViewLayout: UICollectionViewFlowLayout())
-        placeholdersCollectionView.backgroundColor = .clear
+        placeholdersCollectionView.backgroundColor = .brown
         self.view.addSubview(placeholdersCollectionView)
         self.placeholdersCollectionView = placeholdersCollectionView
  
@@ -166,7 +163,13 @@ extension GameViewController: UICollectionViewDelegateFlowLayout {
     public func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 20, left: 60, bottom: 20, right: 60)
+        if collectionView == self.tonesCollectionView {
+            let verticalMargin = CGFloat(20) * CGFloat(5 - self.tones.count / 7)
+            let horizontalMargin = CGFloat(60)
+            return UIEdgeInsets(top: verticalMargin, left: horizontalMargin, bottom: verticalMargin, right: horizontalMargin)
+        } else {
+            return UIEdgeInsets(top: 40, left: 20, bottom: 40, right: 20)
+        }
     }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

@@ -60,7 +60,7 @@ public class DifficultySegmentedControl: UIControl {
         self.backgroundColor = .clear
         
         for index in 1 ... self.levels.count {
-            let label = UILabel(frame: CGRect(x: 120 * (index - 1), y: 0, width: 120, height: 50))
+            let label = UILabel(frame: CGRect(x: 150 * (index - 1), y: 0, width: 150, height: 50))
             label.text = self.levels[index - 1].rawValue
             label.backgroundColor = .clear
             label.textAlignment = .center

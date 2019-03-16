@@ -23,30 +23,40 @@ class HomeViewController: UIViewController {
     }
     
     override func loadView() {
-        self.view = UIView(frame: CGRect(x: SharedValues.shared.getHomeView().getX(),
-                                         y: SharedValues.shared.getHomeView().getY(),
-                                         width: SharedValues.shared.getHomeView().getWidth(),
-                                         height: SharedValues.shared.getHomeView().getHeight()))
-        self.view.backgroundColor = SharedValues.shared.getHomeView().getBackgroundColor()
+        self.view = UIView(frame: CGRect(x: SharedValues.shared().getHomeView().getX(),
+                                         y: SharedValues.shared().getHomeView().getY(),
+                                         width: SharedValues.shared().getHomeView().getWidth(),
+                                         height: SharedValues.shared().getHomeView().getHeight()))
+        self.view.backgroundColor = SharedValues.shared().getHomeView().getBackgroundColor()
         
         
-        let instrumentSegmentedControl = InstrumentSegmentedControl(frame: CGRect(x: 80, y: 100, width: 600, height: 120),
+        let instrumentSegmentedControl = InstrumentSegmentedControl(frame: CGRect(x: SharedValues.shared().getInstrumentSegmentedControl().getX(),
+                                                                                  y: SharedValues.shared().getInstrumentSegmentedControl().getY(),
+                                                                                  width: SharedValues.shared().getInstrumentSegmentedControl().getWidth(),
+                                                                                  height: SharedValues.shared().getInstrumentSegmentedControl().getHeight()),
                                                                     instruments: self.instruments)
         instrumentSegmentedControl.backgroundColor = .brown
         instrumentSegmentedControl.delegate = self
         self.view.addSubview(instrumentSegmentedControl)
         
         
-        let difficultySegmentedControl = DifficultySegmentedControl(frame: CGRect(x: 200, y: 300, width: 360, height: 50),
+        let difficultySegmentedControl = DifficultySegmentedControl(frame: CGRect(x: SharedValues.shared().getDifficultySegmentedControl().getX(),
+                                                                                  y: SharedValues.shared().getDifficultySegmentedControl().getY(),
+                                                                                  width: SharedValues.shared().getDifficultySegmentedControl().getWidth(),
+                                                                                  height: SharedValues.shared().getDifficultySegmentedControl().getHeight()),
                                                                     levels: DifficultyLevel.levels)
+        difficultySegmentedControl.backgroundColor = .brown
         difficultySegmentedControl.delegate = self
         self.view.addSubview(difficultySegmentedControl)
         
         
         let playButton = UIButton(type: .custom)
-        playButton.setTitle("Play", for: .normal)
+        playButton.setTitle(SharedValues.shared().getPlayButton().getTitle(), for: .normal)
         playButton.backgroundColor = .red
-        playButton.frame = CGRect(x: 320, y: 400, width: 120, height: 50)
+        playButton.frame = CGRect(x: SharedValues.shared().getPlayButton().getX(),
+                                  y: SharedValues.shared().getPlayButton().getY(),
+                                  width: SharedValues.shared().getPlayButton().getWidth(),
+                                  height: SharedValues.shared().getPlayButton().getHeight())
         playButton.titleLabel?.textAlignment = .center
         playButton.layer.cornerRadius = playButton.frame.size.height / 2
         playButton.addTarget(self, action: #selector(HomeViewController.playGame(sender:)), for: .touchUpInside)
