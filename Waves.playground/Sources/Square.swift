@@ -26,15 +26,7 @@ public class Square: Shape {
     }
     
     class func path(size: CGSize) -> UIBezierPath {
-        let path = UIBezierPath()
-    
-        path.move(to: CGPoint(x: -size.width/2, y: -size.height/2))
-        path.addLine(to: CGPoint(x: size.width/2, y: -size.height/2))
-        path.addLine(to: CGPoint(x: size.width/2, y: size.height/2))
-        path.addLine(to: CGPoint(x: -size.width/2, y: size.height/2))
-        path.addLine(to: CGPoint(x: -size.width/2, y: -size.height/2))
- 
-        path.close()
+        let path = UIBezierPath(rect: CGRect(x: 0, y: 0, width: size.width, height: size.height))
         return path
     }
 }

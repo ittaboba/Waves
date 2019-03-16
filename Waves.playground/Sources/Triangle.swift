@@ -23,10 +23,13 @@ public class Triangle: Shape {
     
     class func path(size: CGSize) -> CGMutablePath {
         let path: CGMutablePath = CGMutablePath()
-        path.move(to: CGPoint(x: -size.width/2, y: -size.height/2))
+        
+        path.move(to: CGPoint(x: 0, y: 0))
+        
         path.addLine(to: CGPoint(x: size.width/2, y: -size.height/2))
         path.addLine(to: CGPoint(x: 0, y: size.height/2))
         path.addLine(to: CGPoint(x: -size.width/2, y: -size.height/2))
+        
         return path
     }
 }

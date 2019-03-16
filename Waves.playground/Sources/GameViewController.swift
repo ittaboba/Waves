@@ -26,11 +26,11 @@ public class GameViewController: UIViewController {
         }
         
         // create tones for notes
-        for note in allNotes {
+        for i in 0 ..< allNotes.count {
             let instrument = InstrumentFactory.shared().createInstrument(withType: instrumentType)
             
-            let tone = Tone(withFrame: CGRect(x: 100, y: 100, width: 120, height: 120),
-                            note: note,
+            let tone = Tone(withFrame: CGRect(x: 100 * i, y: 100, width: 300, height: 300),
+                            note: allNotes[i],
                             instrument: instrument)
             self.allTones.append(tone)
         }
