@@ -20,13 +20,13 @@ public class InstrumentSegmentedControl: UIControl {
         }
     }
     
-    private var selectedIconColor = UIColor.black {
+    private var selectedIconColor = UIColor.white {
         didSet {
             self.setSelectedColors()
         }
     }
     
-    private var unselectedIconColor = UIColor.black {
+    private var unselectedIconColor = UIColor.white {
         didSet {
             self.setSelectedColors()
         }

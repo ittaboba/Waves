@@ -34,11 +34,11 @@ public class DifficultySegmentedControl: UIControl {
     
     private var thumbColor = UIColor.yellow {
         didSet {
-            self.setSelectedColors()
+            self.thumbView.backgroundColor = self.thumbColor
         }
     }
     
-    private var font = UIFont.systemFont(ofSize: 12) {
+    private var font = UIFont.systemFont(ofSize: 18) {
         didSet {
             setFont()
         }
@@ -80,7 +80,7 @@ public class DifficultySegmentedControl: UIControl {
         let newWidth = selectFrame.size.width / CGFloat(self.levels.count)
         selectFrame.size.width = newWidth
         self.thumbView.frame = selectFrame
-        self.thumbView.backgroundColor = self.thumbColor
+        
         self.thumbView.layer.cornerRadius = selectFrame.size.height / 2
         
         self.displayNewSelectedIndex()
@@ -114,16 +114,17 @@ public class DifficultySegmentedControl: UIControl {
         
         UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.8, options: [], animations: {
             self.thumbView.frame = label.frame
+            self.selectedLabelColor = .green
         }, completion: nil)
     }
     
     private func setSelectedColors(){
-        for item in self.labels {
-            item.textColor = self.unselectedLabelColor
-        }
-        
-        if self.labels.count > 0 {
-            self.labels[0].textColor = self.selectedLabelColor
+        for index in 0 ..< self.labels.count {
+            if(index != self.selectedIndex) {
+                self.labels[index].textColor = self.unselectedLabelColor
+            } else {
+                self.labels[index].textColor = self.selectedLabelColor
+            }
         }
         
         self.thumbView.backgroundColor = self.thumbColor
