@@ -6,7 +6,7 @@ class HomeViewController: UIViewController {
     private let instruments = [
         InstrumentFactory.shared().createInstrument(withType: .Piano),
         InstrumentFactory.shared().createInstrument(withType: .Guitar),
-        InstrumentFactory.shared().createInstrument(withType: .Piano),
+        InstrumentFactory.shared().createInstrument(withType: .Trumpet),
         InstrumentFactory.shared().createInstrument(withType: .Guitar),
         InstrumentFactory.shared().createInstrument(withType: .Piano)
     ]

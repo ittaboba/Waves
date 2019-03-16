@@ -111,7 +111,7 @@ public class InstrumentSegmentedControl: UIControl {
         icon.tintColor = self.selectedIconColor
         
         UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.8, options: [], animations: {
-            self.thumbView.frame = CGRect(x: icon.frame.origin.x - 20, y: icon.frame.origin.y - 20, width: 120, height: 120)
+            self.thumbView.frame = CGRect(x: icon.frame.origin.x + 15, y: icon.frame.origin.y + 15, width: 60, height: 60)
             
             self.thumbColor = self.instruments[self.selectedIndex].getType().getShape().getColor()
             

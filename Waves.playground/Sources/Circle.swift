@@ -2,12 +2,18 @@ import SpriteKit
 
 public class Circle: Shape {
     
-    public required init(diameter: CGFloat, color: UIColor) {
-        super.init(color: color)
-        self.path = Circle.path(radius: diameter / 2)
+    private var diameter: CGFloat = 0 {
+        didSet {
+            self.path = Circle.path(radius: diameter / 2)
+        }
     }
     
-    public required init?(coder aDecoder: NSCoder) {
+    public required init(diameter: CGFloat, color: UIColor) {
+        super.init(color: color)
+        self.path = Circle.path(radius: diameter/2)
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
@@ -15,6 +21,9 @@ public class Circle: Shape {
         super.init(color: color)
     }
     
+    public func setDiameter(diameter: CGFloat) {
+        self.diameter = diameter
+    }
 
     class func path(radius: CGFloat) -> CGMutablePath {
         let path = CGMutablePath()

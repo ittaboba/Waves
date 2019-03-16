@@ -3,6 +3,7 @@ import UIKit
 public enum InstrumentType {
     case Piano
     case Guitar
+    case Trumpet
     
     public func getShape() -> Shape {
         switch self {
@@ -10,6 +11,8 @@ public enum InstrumentType {
             return Circle(diameter: 120, color: .red)
         case .Guitar:
             return Square(size: CGSize(width: 120, height: 120), color: .green)
+        case .Trumpet:
+            return Triangle(size: CGSize(width: 120, height: 120), color: .blue)
         }
     }
 }
@@ -34,6 +37,8 @@ public class InstrumentFactory {
             return PianoInstrument(withShape: type.getShape())
         case .Guitar:
             return GuitarInstrument(withShape: type.getShape())
+        case .Trumpet:
+            return TrumpetInstrument(withShape: type.getShape())
         }
     }
 }

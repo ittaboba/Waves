@@ -2,6 +2,12 @@ import SpriteKit
 
 public class Triangle: Shape {
     
+    private var size = CGSize(width: 0, height: 0) {
+        didSet {
+            self.path = Triangle.path(size: self.size)
+        }
+    }
+    
     required public init(size: CGSize, color: UIColor) {
         super.init(color: color)
         self.path = Triangle.path(size: size)
