@@ -10,5 +10,4 @@ public class PianoInstrument: Instrument {
     public func getType() -> InstrumentType {
         return .Piano
     }
-    
 }

@@ -27,7 +27,6 @@ public enum Note: Float {
     case G4 = 4300
     case A4 = 4500
     case B4 = 4700
-    case C5 = 4800
 }
 
 public enum Octaves {
@@ -45,7 +44,6 @@ public class Pitch {
         switch octaves {
         case .one:
             return [
-                .C2,
                 .B,
                 .A,
                 .G,
@@ -56,7 +54,6 @@ public class Pitch {
             ]
         case .two:
             return [
-                .C3,
                 .B2,
                 .A2,
                 .G2,
@@ -74,7 +71,6 @@ public class Pitch {
             ]
         case .three:
             return [
-                .C4,
                 .B3,
                 .A3,
                 .G3,
@@ -99,7 +95,6 @@ public class Pitch {
             ]
         case .four:
             return [
-                .C5,
                 .B4,
                 .A4,
                 .G4,

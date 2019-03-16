@@ -43,9 +43,9 @@ enum ViewType {
     func get() -> View {
         switch self {
         case .Home:
-            return View(x: 0, y: 0, width: 800, height: 500, backgroundColor: .white)
+            return View(x: 0, y: 0, width: 700, height: 500, backgroundColor: .white)
         case .Game:
-            return View(x: 0, y: 0, width: 800, height: 500, backgroundColor: .white)
+            return View(x: 0, y: 0, width: 700, height: 500, backgroundColor: .white)
         }
     }
 }

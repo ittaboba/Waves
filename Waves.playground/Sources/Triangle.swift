@@ -21,6 +21,10 @@ public class Triangle: Shape {
         super.init(color: color)
     }
     
+    public func setSize(size: CGSize) {
+        self.size = size
+    }
+    
     class func path(size: CGSize) -> CGMutablePath {
         let path: CGMutablePath = CGMutablePath()
         
