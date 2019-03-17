@@ -1,6 +1,7 @@
 import UIKit
 import AVFoundation
 
+
 public class ToneCollectionViewCell: UICollectionViewCell {
     public override var isSelected: Bool {
         didSet {
@@ -153,12 +154,12 @@ public class GameViewController: UIViewController {
     
     @objc func listenButtonPressed(sender: UIButton) {
         self.lockButtons()
-        self.play(tones: self.solution, atIndex: 0)
+        self.play(tones: self.solution, atIndex: 0, isSolution: false)
     }
     
     @objc func playButtonPressed(sender: UIButton) {
         self.lockButtons()
-        self.play(tones: self.placeholders, atIndex: 0)
+        self.play(tones: self.placeholders, atIndex: 0, isSolution: false)
     }
     
     @objc func solutionButtonPressed(sender: UIButton) {
@@ -166,16 +167,26 @@ public class GameViewController: UIViewController {
         self.placeholders = self.solution
         self.placeholdersCollectionView.reloadData()
         self.placeholdersCollectionView.allowsSelection = false
+        self.play(tones: self.placeholders, atIndex: 0, isSolution: true)
     }
     
-    private func play(tones: [Tone], atIndex index: Int) {
-        if index == tones.count {
+    private func play(tones: [Tone], atIndex index: Int, isSolution: Bool) {
+        if index == tones.count && isSolution {
+            return
+        } else if index == tones.count {
             self.unlockButtons()
             return
         } else {
-            tones[index].play()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
-                self.play(tones: tones, atIndex: index + 1)
+            UIView.animate(withDuration: 0.2, animations: {
+                tones[index].transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+            })
+            tones[index].play(didFinish: {
+                DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
+                    UIView.animate(withDuration: 0.2, animations: {
+                        tones[index].transform = CGAffineTransform.identity
+                    })
+                    self.play(tones: tones, atIndex: index + 1, isSolution: isSolution)
+                })
             })
         }
     }
@@ -230,7 +241,7 @@ extension GameViewController: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == self.tonesCollectionView {
             self.selectedTone = self.tones[indexPath.item]
-            self.tones[indexPath.item].play()
+            self.tones[indexPath.item].play(didFinish: nil)
         } else {
             if self.placeholders[indexPath.item].isPlaceholder() {
                 if let tone = self.selectedTone {

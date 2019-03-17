@@ -22,12 +22,15 @@ public class TonePlayer {
         engine.connect(self.pitchEffect, to: engine.mainMixerNode, format: self.audioBuffer?.format)
     }
     
-    public func play() {
-        self.player.scheduleBuffer(self.audioBuffer!, at: nil, options: [], completionHandler: nil)
+    public func play(didFinish: (() -> Void)?) {
+        self.player.scheduleBuffer(self.audioBuffer!, at: nil, options: [], completionHandler: {
+            didFinish?()
+        })
         self.player.play()
     }
     
     public func stop() {
         self.player.stop()
     }
+    
 }

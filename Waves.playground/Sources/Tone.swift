@@ -66,9 +66,16 @@ public class Tone: UIView {
         return Tone(withInstrument: self.instrument, note: self.note, engine: self.engine)
     }
     
-    public func play() {
+    public func play(didFinish: (() -> Void)?) {        
         if let player = self.audioPlayer {
-            player.play()
+            player.play(didFinish: {
+                didFinish?()
+            })
+        } else {
+            // silence
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.2, execute: {
+                didFinish?()
+            })
         }
     }
     
