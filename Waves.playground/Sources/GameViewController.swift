@@ -109,19 +109,19 @@ public class GameViewController: UIViewController {
         // tones collection view
         let tonesCollectionView = UICollectionView(frame: CGRect(x: 50, y: 200, width: 600, height: 300),
                                                    collectionViewLayout: UICollectionViewFlowLayout())
-        tonesCollectionView.backgroundColor = .black
+        tonesCollectionView.backgroundColor = .clear
         self.view.addSubview(tonesCollectionView)
         self.tonesCollectionView = tonesCollectionView
         
         // placeholders collection view
-        let placeholdersCollectionView = UICollectionView(frame: CGRect(x: 50, y: 50, width: 600, height: 100),
+        let placeholdersCollectionView = UICollectionView(frame: CGRect(x: 50, y: 50, width: 600, height: 90),
                                                            collectionViewLayout: UICollectionViewFlowLayout())
-        placeholdersCollectionView.backgroundColor = .brown
+        placeholdersCollectionView.backgroundColor = .clear
         self.view.addSubview(placeholdersCollectionView)
         self.placeholdersCollectionView = placeholdersCollectionView
         
         // listen button
-        self.listenButton.frame = CGRect(x: 75, y: 150, width: 150, height: 50)
+        self.listenButton.frame = CGRect(x: 75, y: 145, width: 150, height: 50)
         self.listenButton.setTitle("Listen (\(self.attemptsRemaining))", for: .normal)
         self.listenButton.backgroundColor = .red
         self.listenButton.layer.cornerRadius = 25
@@ -129,7 +129,7 @@ public class GameViewController: UIViewController {
         self.view.addSubview(self.listenButton)
         
         // play button
-        self.playButton.frame = CGRect(x: 275, y: 150, width: 150, height: 50)
+        self.playButton.frame = CGRect(x: 275, y: 145, width: 150, height: 50)
         self.playButton.setTitle("Play", for: .normal)
         self.playButton.backgroundColor = .red
         self.playButton.layer.cornerRadius = 25
@@ -137,7 +137,7 @@ public class GameViewController: UIViewController {
         self.view.addSubview(self.playButton)
         
         // solution button
-        self.solutionButton.frame = CGRect(x: 475, y: 150, width: 150, height: 50)
+        self.solutionButton.frame = CGRect(x: 475, y: 145, width: 150, height: 50)
         self.solutionButton.setTitle("Solution", for: .normal)
         self.solutionButton.backgroundColor = .red
         self.solutionButton.layer.cornerRadius = 25
@@ -299,10 +299,12 @@ extension GameViewController: UICollectionViewDelegateFlowLayout {
     public func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         insetForSectionAt section: Int) -> UIEdgeInsets {
-        let horizontalMargin = CGFloat(60)
+        
+        let horizontalMargin = CGFloat(20)
         
         if collectionView == self.tonesCollectionView {
-            let verticalMargin = CGFloat(20) * CGFloat(5 - self.tones.count / 7)
+            let numOfLines = Int(self.tones.count / 7)
+            let verticalMargin = (collectionView.frame.size.height - CGFloat(50 * numOfLines) - CGFloat(20 * (numOfLines - 1)))/CGFloat(2)
             return UIEdgeInsets(top: verticalMargin, left: horizontalMargin, bottom: verticalMargin, right: horizontalMargin)
         } else {
             return UIEdgeInsets(top: 20, left: horizontalMargin, bottom: 20, right: horizontalMargin)
@@ -314,6 +316,6 @@ extension GameViewController: UICollectionViewDelegateFlowLayout {
     }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 20
+        return 35
     }
 }
