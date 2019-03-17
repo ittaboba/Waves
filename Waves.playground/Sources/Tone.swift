@@ -1,16 +1,22 @@
 import UIKit
+import AVFoundation
 
 public class Tone: UIView {
     
     private var note: Note?
     private var instrument: Instrument
+    private var engine: AVAudioEngine
     
-    public init(withFrame frame: CGRect, note: Note?, instrument: Instrument) {
+    private var audioPlayer: TonePlayer?
+    
+    public init(withFrame frame: CGRect, instrument: Instrument, note: Note?, engine: AVAudioEngine) {
         self.note = note
         self.instrument = instrument
+        self.engine = engine
         
         super.init(frame: frame)
         
+        // set Tone color based on Note
         if let n = note {
             let instrumentHue = instrument.getType().getShape().getColor().getHue()
             
@@ -31,7 +37,14 @@ public class Tone: UIView {
             self.backgroundColor = .gray
         }
         
+        // set Tone shape
         self.setMask(forShape: instrument.getType().getShape(), size: frame.size)
+        
+        // set audioPlayer
+        if let n = note {
+            self.audioPlayer = TonePlayer(withEngine: engine, instrument: instrument, note: n)
+        }
+        
     }
     
     public required init?(coder aDecoder: NSCoder) {
@@ -63,6 +76,18 @@ public class Tone: UIView {
     }
     
     public func clone() -> Tone {
-        return Tone(withFrame: self.frame, note: self.note, instrument: self.instrument)
+        return Tone(withFrame: self.frame, instrument: self.instrument, note: self.note, engine: self.engine)
+    }
+    
+    public func play() {
+        if let player = self.audioPlayer {
+            player.play()
+        }
+    }
+    
+    public func stop() {
+        if let player = self.audioPlayer {
+            player.stop()
+        }
     }
 }

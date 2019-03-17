@@ -1,4 +1,5 @@
 import UIKit
+import AVFoundation
 
 public enum InstrumentType {
     case Piano
@@ -24,6 +25,7 @@ public protocol Instrument {
     var shape: Shape {get set}
     
     func getType() -> InstrumentType
+    func getTimbre() -> AVAudioFile?
 }
 
 public class InstrumentFactory {

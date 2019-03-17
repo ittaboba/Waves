@@ -1,4 +1,5 @@
 import UIKit
+import AVFoundation
 
 public class ToneCollectionViewCell: UICollectionViewCell {
     public override var isSelected: Bool {
@@ -17,6 +18,8 @@ public class ToneCollectionViewCell: UICollectionViewCell {
 }
 
 public class GameViewController: UIViewController {
+    
+    private let engine = AVAudioEngine()
     
     private var instrument: Instrument!
         
@@ -52,18 +55,24 @@ public class GameViewController: UIViewController {
         self.instrument = InstrumentFactory.shared().createInstrument(withType: instrumentType)
         for i in 0 ..< allNotes.count {
             let tone = Tone(withFrame: CGRect(x: 0, y: 0, width: 50, height: 50),
+                            instrument: self.instrument,
                             note: allNotes[i],
-                            instrument: self.instrument)
+                            engine: self.engine)
             self.tones.append(tone)
         }
         
         // create tones for placeholders
         for _ in 0 ..< 6 {
             let placeholder = Tone(withFrame: CGRect(x: 0, y: 0, width: 50, height: 50),
+                                   instrument: self.instrument,
                                    note: nil,
-                                   instrument: self.instrument)
+                                   engine: self.engine)
             self.placeholders.append(placeholder)
         }
+        
+        // set engine
+        self.engine.prepare()
+        try! engine.start()
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -135,7 +144,7 @@ extension GameViewController: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == self.tonesCollectionView {
             self.selectedTone = self.tones[indexPath.item]
-            
+            self.tones[indexPath.item].play()
         } else {
             if self.placeholders[indexPath.item].isPlaceholder() {
                 if let tone = self.selectedTone {
@@ -144,8 +153,9 @@ extension GameViewController: UICollectionViewDelegate {
                 }
             } else {
                 let newPlaceholder = Tone(withFrame: CGRect(x: 0, y: 0, width: 50, height: 50),
+                                          instrument: self.instrument,
                                           note: nil,
-                                          instrument: self.instrument)
+                                          engine: self.engine)
                 self.placeholders[indexPath.item] = newPlaceholder
             }
             self.placeholdersCollectionView.reloadData()
