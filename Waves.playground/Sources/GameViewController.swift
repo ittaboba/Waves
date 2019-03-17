@@ -40,6 +40,8 @@ public class GameViewController: UIViewController {
     private let playButton = UIButton(type: .custom)
     private let solutionButton = UIButton(type: .custom)
     
+    private var attemptsRemaining = 0
+    
     public init(withLevel level: DifficultyLevel, instrumentType: InstrumentType) {
         let gameDifficulty = DifficultyManager()
         var allNotes = [Note]()
@@ -48,12 +50,15 @@ public class GameViewController: UIViewController {
         switch level {
         case .Easy:
             self.levelNotes = gameDifficulty.setGame(withDifficultyLevel: Easy())
+            self.attemptsRemaining = 10
             allNotes = Pitch.shared.getNotes(forOctaves: .one)
         case .Medium:
             self.levelNotes = gameDifficulty.setGame(withDifficultyLevel: Medium())
+            self.attemptsRemaining = 6
             allNotes = Pitch.shared.getNotes(forOctaves: .two)
         case .Hard:
             self.levelNotes = gameDifficulty.setGame(withDifficultyLevel: Hard())
+            self.attemptsRemaining = 3
             allNotes = Pitch.shared.getNotes(forOctaves: .four)
         }
         
@@ -117,7 +122,7 @@ public class GameViewController: UIViewController {
         
         // listen button
         self.listenButton.frame = CGRect(x: 75, y: 150, width: 150, height: 50)
-        self.listenButton.setTitle("Listen", for: .normal)
+        self.listenButton.setTitle("Listen (\(self.attemptsRemaining))", for: .normal)
         self.listenButton.backgroundColor = .red
         self.listenButton.layer.cornerRadius = 25
         self.listenButton.addTarget(self, action: #selector(GameViewController.listenButtonPressed(sender:)), for: .touchUpInside)
@@ -153,8 +158,14 @@ public class GameViewController: UIViewController {
     }
     
     @objc func listenButtonPressed(sender: UIButton) {
-        self.lockButtons()
-        self.play(tones: self.solution, atIndex: 0, isSolution: false)
+        if self.attemptsRemaining == 0 {
+            self.showDefeatMessage()
+        } else {
+            self.lockButtons()
+            self.attemptsRemaining -= 1
+            self.listenButton.setTitle("Listen (\(self.attemptsRemaining))", for: .normal)
+            self.play(tones: self.solution, atIndex: 0, isSolution: false)
+        }
     }
     
     @objc func playButtonPressed(sender: UIButton) {
@@ -175,6 +186,9 @@ public class GameViewController: UIViewController {
             return
         } else if index == tones.count {
             self.unlockButtons()
+            if self.victoryCheck() {
+                self.showVictoryMessage()
+            }
             return
         } else {
             UIView.animate(withDuration: 0.2, animations: {
@@ -213,6 +227,22 @@ public class GameViewController: UIViewController {
         self.solutionButton.backgroundColor = .red
     }
 
+    private func victoryCheck() -> Bool {
+        for i in 0 ..< self.solution.count {
+            if self.solution[i].getNote()?.rawValue != self.placeholders[i].getNote()?.rawValue {
+                return false
+            }
+        }
+        return true
+    }
+    
+    private func showVictoryMessage() {
+        print("victory")
+    }
+    
+    private func showDefeatMessage() {
+        print("defeat")
+    }
 }
 
 extension GameViewController: UICollectionViewDataSource {

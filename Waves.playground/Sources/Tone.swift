@@ -53,6 +53,9 @@ public class Tone: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    public func getNote() -> Note? {
+        return self.note
+    }
 
     public func isPlaceholder() -> Bool {
         if let _ = self.note {
