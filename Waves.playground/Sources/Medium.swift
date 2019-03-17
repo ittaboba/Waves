@@ -1,15 +1,20 @@
 
 public class Medium: Difficulty {
     
-    private var notes: [Note]
-    
-    public init() {
-        self.notes = [Note]()
-    }
+    public init() {}
     
     public func setGame() -> [Note] {
         let notes = Pitch.shared.getNotes(forOctaves: .two)
-        return notes
+        
+        var gameNotes = [Note]()
+        
+        for _ in 0 ..< 7 {
+            let randomIndex = self.randomIndexForRange(range: 0 ..< notes.count)
+            let randomNote = notes[randomIndex]
+            gameNotes.append(randomNote)
+        }
+        
+        return gameNotes
     }
 }
 

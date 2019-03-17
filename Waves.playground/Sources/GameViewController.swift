@@ -24,6 +24,7 @@ public class GameViewController: UIViewController {
     private var instrument: Instrument!
         
     private var levelNotes = [Note]()
+    private var solution = [Tone]()
     
     private var tonesCollectionView: UICollectionView!
     private let tonesCellIdentifier = "tonesCell"
@@ -33,6 +34,10 @@ public class GameViewController: UIViewController {
     private var placeholdersCollectionView: UICollectionView!
     private let placeholdersCellIdentifier = "placeholdersCell"
     private var placeholders = [Tone]()
+    
+    private let listenButton = UIButton(type: .custom)
+    private let playButton = UIButton(type: .custom)
+    private let solutionButton = UIButton(type: .custom)
     
     public init(withLevel level: DifficultyLevel, instrumentType: InstrumentType) {
         let gameDifficulty = DifficultyManager()
@@ -51,23 +56,29 @@ public class GameViewController: UIViewController {
             allNotes = Pitch.shared.getNotes(forOctaves: .four)
         }
         
-        // create tones for notes
         self.instrument = InstrumentFactory.shared().createInstrument(withType: instrumentType)
+        // create tones for solution
+        for note in self.levelNotes {
+            let tone = Tone(withInstrument: self.instrument,
+                            note: note,
+                            engine: self.engine)
+            self.solution.append(tone)
+        }
+        
+        // create tones for notes
         for i in 0 ..< allNotes.count {
-            let tone = Tone(withFrame: CGRect(x: 0, y: 0, width: 50, height: 50),
-                            instrument: self.instrument,
+            let tone = Tone(withInstrument: self.instrument,
                             note: allNotes[i],
                             engine: self.engine)
             self.tones.append(tone)
         }
         
         // create tones for placeholders
-        for _ in 0 ..< 6 {
-            let placeholder = Tone(withFrame: CGRect(x: 0, y: 0, width: 50, height: 50),
-                                   instrument: self.instrument,
+        for _ in 0 ..< self.levelNotes.count {
+            let tone = Tone(withInstrument: self.instrument,
                                    note: nil,
                                    engine: self.engine)
-            self.placeholders.append(placeholder)
+            self.placeholders.append(tone)
         }
         
         // set engine
@@ -82,6 +93,7 @@ public class GameViewController: UIViewController {
     }
     
     override public func loadView() {
+        // main view
         self.view = UIView(frame: CGRect(x: SharedValues.shared().getGameView().getX(),
                                          y: SharedValues.shared().getGameView().getY(),
                                          width: SharedValues.shared().getGameView().getWidth(),
@@ -101,7 +113,30 @@ public class GameViewController: UIViewController {
         placeholdersCollectionView.backgroundColor = .brown
         self.view.addSubview(placeholdersCollectionView)
         self.placeholdersCollectionView = placeholdersCollectionView
- 
+        
+        // listen button
+        self.listenButton.frame = CGRect(x: 75, y: 150, width: 150, height: 50)
+        self.listenButton.setTitle("Listen", for: .normal)
+        self.listenButton.backgroundColor = .red
+        self.listenButton.layer.cornerRadius = 25
+        self.listenButton.addTarget(self, action: #selector(GameViewController.listenButtonPressed(sender:)), for: .touchUpInside)
+        self.view.addSubview(self.listenButton)
+        
+        // play button
+        self.playButton.frame = CGRect(x: 275, y: 150, width: 150, height: 50)
+        self.playButton.setTitle("Play", for: .normal)
+        self.playButton.backgroundColor = .red
+        self.playButton.layer.cornerRadius = 25
+        self.playButton.addTarget(self, action: #selector(GameViewController.playButtonPressed(sender:)), for: .touchUpInside)
+        self.view.addSubview(self.playButton)
+        
+        // solution button
+        self.solutionButton.frame = CGRect(x: 475, y: 150, width: 150, height: 50)
+        self.solutionButton.setTitle("Solution", for: .normal)
+        self.solutionButton.backgroundColor = .red
+        self.solutionButton.layer.cornerRadius = 25
+        self.solutionButton.addTarget(self, action: #selector(GameViewController.solutionButtonPressed(sender:)), for: .touchUpInside)
+        self.view.addSubview(self.solutionButton)
     }
     
     override public func viewDidLoad() {
@@ -114,6 +149,57 @@ public class GameViewController: UIViewController {
         self.placeholdersCollectionView.delegate = self
         self.placeholdersCollectionView.dataSource = self
         self.placeholdersCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: self.placeholdersCellIdentifier)
+    }
+    
+    @objc func listenButtonPressed(sender: UIButton) {
+        self.lockButtons()
+        self.play(tones: self.solution, atIndex: 0)
+    }
+    
+    @objc func playButtonPressed(sender: UIButton) {
+        self.lockButtons()
+        self.play(tones: self.placeholders, atIndex: 0)
+    }
+    
+    @objc func solutionButtonPressed(sender: UIButton) {
+        self.lockButtons()
+        self.placeholders = self.solution
+        self.placeholdersCollectionView.reloadData()
+        self.placeholdersCollectionView.allowsSelection = false
+    }
+    
+    private func play(tones: [Tone], atIndex index: Int) {
+        if index == tones.count {
+            self.unlockButtons()
+            return
+        } else {
+            tones[index].play()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+                self.play(tones: tones, atIndex: index + 1)
+            })
+        }
+    }
+    
+    private func lockButtons() {
+        self.listenButton.isEnabled = false
+        self.listenButton.backgroundColor = .black
+        
+        self.playButton.isEnabled = false
+        self.playButton.backgroundColor = .black
+        
+        self.solutionButton.isEnabled = false
+        self.solutionButton.backgroundColor = .black
+    }
+    
+    private func unlockButtons() {
+        self.listenButton.isEnabled = true
+        self.listenButton.backgroundColor = .red
+        
+        self.playButton.isEnabled = true
+        self.playButton.backgroundColor = .red
+        
+        self.solutionButton.isEnabled = true
+        self.solutionButton.backgroundColor = .red
     }
 
 }
@@ -152,8 +238,7 @@ extension GameViewController: UICollectionViewDelegate {
                     self.placeholders[indexPath.item] = newTone
                 }
             } else {
-                let newPlaceholder = Tone(withFrame: CGRect(x: 0, y: 0, width: 50, height: 50),
-                                          instrument: self.instrument,
+                let newPlaceholder = Tone(withInstrument: self.instrument,
                                           note: nil,
                                           engine: self.engine)
                 self.placeholders[indexPath.item] = newPlaceholder
@@ -173,12 +258,13 @@ extension GameViewController: UICollectionViewDelegateFlowLayout {
     public func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         insetForSectionAt section: Int) -> UIEdgeInsets {
+        let horizontalMargin = CGFloat(60)
+        
         if collectionView == self.tonesCollectionView {
             let verticalMargin = CGFloat(20) * CGFloat(5 - self.tones.count / 7)
-            let horizontalMargin = CGFloat(60)
             return UIEdgeInsets(top: verticalMargin, left: horizontalMargin, bottom: verticalMargin, right: horizontalMargin)
         } else {
-            return UIEdgeInsets(top: 40, left: 20, bottom: 40, right: 20)
+            return UIEdgeInsets(top: 20, left: horizontalMargin, bottom: 20, right: horizontalMargin)
         }
     }
     

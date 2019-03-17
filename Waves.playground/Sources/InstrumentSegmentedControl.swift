@@ -79,7 +79,8 @@ public class InstrumentSegmentedControl: UIControl {
         selectFrame.size.width = newWidth
         self.thumbView.frame = selectFrame
         
-        self.setThumbShape(atSelectedIndex: self.selectedIndex)
+        let shape = self.instruments[self.selectedIndex].getType().getShape(withSize: CGSize(width: 120, height: 120))
+        self.thumbShape = shape
         
         self.displayNewSelectedIndex()
     }
@@ -113,21 +114,12 @@ public class InstrumentSegmentedControl: UIControl {
         UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.8, options: [], animations: {
             self.thumbView.frame = CGRect(x: icon.frame.origin.x - 40, y: icon.frame.origin.y - 40, width: 120, height: 120)
             
-            self.thumbColor = self.instruments[self.selectedIndex].getType().getShape().getColor().toRGBColor()
+            let shape = self.instruments[self.selectedIndex].getType().getShape(withSize: CGSize(width: 120, height: 120))
             
-            self.setThumbShape(atSelectedIndex: self.selectedIndex)
+            self.thumbColor = shape.getColor().toRGBColor()
+            self.thumbShape = shape
             
         }, completion: nil)
-    }
-    
-    private func setThumbShape(atSelectedIndex index: Int) {
-        if self.instruments[index].getType().getShape() is Circle {
-            self.thumbShape = self.instruments[index].getType().getShape() as! Circle
-        } else if self.instruments[index].getType().getShape() is Square {
-            self.thumbShape = self.instruments[index].getType().getShape() as! Square
-        } else if self.instruments[index].getType().getShape() is Triangle {
-            self.thumbShape = self.instruments[index].getType().getShape() as! Triangle
-        }
     }
     
     private func setSelectedColors() {

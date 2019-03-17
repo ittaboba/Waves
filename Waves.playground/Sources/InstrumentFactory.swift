@@ -6,24 +6,22 @@ public enum InstrumentType {
     case Guitar
     case Trumpet
     
-    public func getShape() -> Shape {
+    public func getShape(withSize size: CGSize) -> Shape {
         switch self {
         case .Piano:
-            return Circle(diameter: 120,
+            return Circle(diameter: size.width,
                           color: Color(hue: 0, saturation: 100, value: 100))
         case .Guitar:
-            return Square(size: CGSize(width: 120, height: 120),
+            return Square(size: size,
                           color: Color(hue: 120, saturation: 100, value: 100))
         case .Trumpet:
-            return Triangle(size: CGSize(width: 120, height: 120),
+            return Triangle(size: size,
                             color: Color(hue: 240, saturation: 100, value: 100))
         }
     }
 }
 
 public protocol Instrument {
-    var shape: Shape {get set}
-    
     func getType() -> InstrumentType
     func getTimbre() -> AVAudioFile?
 }
@@ -39,11 +37,11 @@ public class InstrumentFactory {
     public func createInstrument(withType type: InstrumentType) -> Instrument {
         switch type {
         case .Piano:
-            return PianoInstrument(withShape: type.getShape())
+            return PianoInstrument()
         case .Guitar:
-            return GuitarInstrument(withShape: type.getShape())
+            return GuitarInstrument()
         case .Trumpet:
-            return TrumpetInstrument(withShape: type.getShape())
+            return TrumpetInstrument()
         }
     }
 }

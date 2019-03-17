@@ -9,16 +9,21 @@ public class Tone: UIView {
     
     private var audioPlayer: TonePlayer?
     
-    public init(withFrame frame: CGRect, instrument: Instrument, note: Note?, engine: AVAudioEngine) {
+    public init(withInstrument instrument: Instrument, note: Note?, engine: AVAudioEngine) {
         self.note = note
         self.instrument = instrument
         self.engine = engine
         
+        let frame = CGRect(x: 0, y: 0, width: 50, height: 50)
         super.init(frame: frame)
+        
+        // set Tone shape
+        let toneShape = instrument.getType().getShape(withSize: frame.size)
+        self.layer.mask = toneShape
         
         // set Tone color based on Note
         if let n = note {
-            let instrumentHue = instrument.getType().getShape().getColor().getHue()
+            let instrumentHue = toneShape.getColor().getHue()
             
             let allNotes = Pitch.shared.getNotes(forOctaves: .four)
             
@@ -37,9 +42,6 @@ public class Tone: UIView {
             self.backgroundColor = .gray
         }
         
-        // set Tone shape
-        self.setMask(forShape: instrument.getType().getShape(), size: frame.size)
-        
         // set audioPlayer
         if let n = note {
             self.audioPlayer = TonePlayer(withEngine: engine, instrument: instrument, note: n)
@@ -51,22 +53,7 @@ public class Tone: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setMask(forShape shape: Shape, size: CGSize) {
-        if shape is Circle {
-            let newShape = shape as! Circle
-            newShape.setDiameter(diameter: size.width)
-            self.layer.mask = newShape
-        } else if shape is Square {
-            let newShape = shape as! Square
-            newShape.setSize(size: size)
-            self.layer.mask = newShape
-        } else if shape is Triangle {
-            let newShape = shape as! Triangle
-            newShape.setSize(size: size)
-            self.layer.mask = newShape
-        }
-    }
-    
+
     public func isPlaceholder() -> Bool {
         if let _ = self.note {
             return false
@@ -76,7 +63,7 @@ public class Tone: UIView {
     }
     
     public func clone() -> Tone {
-        return Tone(withFrame: self.frame, instrument: self.instrument, note: self.note, engine: self.engine)
+        return Tone(withInstrument: self.instrument, note: self.note, engine: self.engine)
     }
     
     public func play() {
