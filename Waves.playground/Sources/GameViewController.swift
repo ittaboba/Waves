@@ -59,7 +59,7 @@ public class GameViewController: UIViewController {
         case .Hard:
             self.levelNotes = gameDifficulty.setGame(withDifficultyLevel: Hard())
             self.attemptsRemaining = 3
-            allNotes = Pitch.shared.getNotes(forOctaves: .four)
+            allNotes = Pitch.shared.getNotes(forOctaves: .two)
         }
         
         self.instrument = InstrumentFactory.shared().createInstrument(withType: instrumentType)

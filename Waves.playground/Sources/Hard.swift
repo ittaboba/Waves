@@ -5,7 +5,7 @@ public class Hard: Difficulty {
     public init() {}
     
     public func setGame() -> [Note] {
-        let notes = Pitch.shared.getNotes(forOctaves: .four)
+        let notes = Pitch.shared.getNotes(forOctaves: .two)
         
         var gameNotes = [Note]()
         

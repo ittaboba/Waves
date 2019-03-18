@@ -87,7 +87,7 @@ enum SegmentedControlType {
     func get() -> SegmentedControl {
         switch self {
         case .Difficulty:
-            return SegmentedControl(x: 125, y: 300, width: 450, height: 50)
+            return SegmentedControl(x: 125, y: 280, width: 450, height: 50)
         case .Instrument:
             return SegmentedControl(x: 50, y: 100, width: 600, height: 120)
         }

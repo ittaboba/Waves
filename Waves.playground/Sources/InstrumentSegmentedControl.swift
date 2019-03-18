@@ -26,7 +26,7 @@ public class InstrumentSegmentedControl: UIControl {
         }
     }
     
-    private var unselectedIconColor = UIColor.white {
+    private var unselectedIconColor = UIColor.black {
         didSet {
             self.setSelectedColors()
         }
@@ -79,7 +79,7 @@ public class InstrumentSegmentedControl: UIControl {
         selectFrame.size.width = newWidth
         self.thumbView.frame = selectFrame
         
-        let shape = self.instruments[self.selectedIndex].getType().getShape(withSize: CGSize(width: 120, height: 120))
+        let shape = self.instruments[self.selectedIndex].getType().getShape()
         self.thumbShape = shape
         
         self.displayNewSelectedIndex()
@@ -112,9 +112,9 @@ public class InstrumentSegmentedControl: UIControl {
         icon.tintColor = self.selectedIconColor
         
         UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.8, options: [], animations: {
-            self.thumbView.frame = CGRect(x: icon.frame.origin.x - 40, y: icon.frame.origin.y - 40, width: 120, height: 120)
+            self.thumbView.center = icon.center
             
-            let shape = self.instruments[self.selectedIndex].getType().getShape(withSize: CGSize(width: 120, height: 120))
+            let shape = self.instruments[self.selectedIndex].getType().getShape()
             
             self.thumbColor = shape.getColor().toRGBColor()
             self.thumbShape = shape

@@ -6,17 +6,14 @@ public enum InstrumentType {
     case Guitar
     case Trumpet
     
-    public func getShape(withSize size: CGSize) -> Shape {
+    public func getShape() -> Shape {
         switch self {
         case .Piano:
-            return Circle(diameter: size.width,
-                          color: Color(hue: 0, saturation: 100, value: 100))
+            return Hexagon(color: Color(hue: 240, saturation: 100, value: 100))
         case .Guitar:
-            return Square(size: size,
-                          color: Color(hue: 120, saturation: 100, value: 100))
+            return Square(color: Color(hue: 120, saturation: 100, value: 100))
         case .Trumpet:
-            return Triangle(size: size,
-                            color: Color(hue: 240, saturation: 100, value: 100))
+            return Pentagon(color: Color(hue: 240, saturation: 100, value: 100))
         }
     }
 }

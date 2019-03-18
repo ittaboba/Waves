@@ -1,39 +1,25 @@
-import SpriteKit
+
+import UIKit
 
 public class Triangle: Shape {
     
-    private var size = CGSize(width: 0, height: 0) {
-        didSet {
-            self.path = Triangle.path(size: self.size).cgPath
-        }
-    }
-    
-    required public init(size: CGSize, color: Color) {
+    required public init(color: Color) {
         super.init(color: color)
-        self.path = Triangle.path(size: size).cgPath
+        self.path = Triangle.path().cgPath
     }
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
-    required public init(color: Color) {
-        super.init(color: color)
-    }
-    
-    public func setSize(size: CGSize) {
-        self.size = size
-    }
-    
-    class func path(size: CGSize) -> UIBezierPath {
+    class func path() -> UIBezierPath {
         let path = UIBezierPath()
         
-        path.move(to: CGPoint(x: 0, y: 0))
-        
-        path.addLine(to: CGPoint(x: size.width/2, y: -size.height/2))
-        path.addLine(to: CGPoint(x: 0, y: size.height/2))
-        path.addLine(to: CGPoint(x: -size.width/2, y: -size.height/2))
-        
+        path.move(to: CGPoint(x: 0, y: 120))
+        path.addLine(to: CGPoint(x: 120, y: 120))
+        path.addLine(to: CGPoint(x: 60, y: 0))
+        path.addLine(to: CGPoint(x: 0, y: 120))
+                
         return path
     }
 }

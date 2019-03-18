@@ -35,7 +35,7 @@ class HomeViewController: UIViewController {
                                                                                   width: SharedValues.shared().getInstrumentSegmentedControl().getWidth(),
                                                                                   height: SharedValues.shared().getInstrumentSegmentedControl().getHeight()),
                                                                     instruments: self.instruments)
-        instrumentSegmentedControl.backgroundColor = .brown
+        instrumentSegmentedControl.backgroundColor = .clear
         instrumentSegmentedControl.delegate = self
         self.view.addSubview(instrumentSegmentedControl)
         
@@ -45,7 +45,7 @@ class HomeViewController: UIViewController {
                                                                                   width: SharedValues.shared().getDifficultySegmentedControl().getWidth(),
                                                                                   height: SharedValues.shared().getDifficultySegmentedControl().getHeight()),
                                                                     levels: DifficultyLevel.levels)
-        difficultySegmentedControl.backgroundColor = .brown
+        difficultySegmentedControl.backgroundColor = .clear
         difficultySegmentedControl.delegate = self
         self.view.addSubview(difficultySegmentedControl)
         

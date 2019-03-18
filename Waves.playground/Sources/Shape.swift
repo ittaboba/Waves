@@ -1,5 +1,4 @@
 import UIKit
-import SpriteKit
 
 public class Shape: CAShapeLayer {
     

@@ -18,14 +18,16 @@ public class Tone: UIView {
         super.init(frame: frame)
         
         // set Tone shape
-        let toneShape = instrument.getType().getShape(withSize: frame.size)
+        let toneShape = instrument.getType().getShape()
+        let transform = CGAffineTransform(scaleX: 0.4, y: 0.4)
+        toneShape.setAffineTransform(transform)
         self.layer.mask = toneShape
         
         // set Tone color based on Note
         if let n = note {
             let instrumentHue = toneShape.getColor().getHue()
             
-            let allNotes = Pitch.shared.getNotes(forOctaves: .four)
+            let allNotes = Pitch.shared.getNotes(forOctaves: .two)
             
             if let index = allNotes.firstIndex(of: n) {
                 let octave = CGFloat(index/7 + 1)
