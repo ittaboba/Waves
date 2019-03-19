@@ -104,7 +104,7 @@ public class GameViewController: UIViewController {
                                          y: SharedValues.shared().getGameView().getY(),
                                          width: SharedValues.shared().getGameView().getWidth(),
                                          height: SharedValues.shared().getGameView().getHeight()))
-        self.view.backgroundColor = SharedValues.shared().getGameView().getBackgroundColor()
+        self.view.backgroundColor = Settings.shared().getDisplayMode() == .Light ? UIColor.white : UIColor.black
         
         // tones collection view
         let tonesCollectionView = UICollectionView(frame: CGRect(x: 50, y: 200, width: 600, height: 300),
@@ -123,7 +123,8 @@ public class GameViewController: UIViewController {
         // listen button
         self.listenButton.frame = CGRect(x: 75, y: 145, width: 150, height: 50)
         self.listenButton.setTitle("Listen (\(self.attemptsRemaining))", for: .normal)
-        self.listenButton.backgroundColor = .red
+        self.listenButton.backgroundColor = Settings.shared().getDisplayMode() == .Light ? UIColor.black : UIColor.white
+        self.listenButton.setTitleColor(Settings.shared().getDisplayMode() == .Light ? UIColor.white : UIColor.black, for: .normal)
         self.listenButton.layer.cornerRadius = 25
         self.listenButton.addTarget(self, action: #selector(GameViewController.listenButtonPressed(sender:)), for: .touchUpInside)
         self.view.addSubview(self.listenButton)
@@ -131,7 +132,8 @@ public class GameViewController: UIViewController {
         // play button
         self.playButton.frame = CGRect(x: 275, y: 145, width: 150, height: 50)
         self.playButton.setTitle("Play", for: .normal)
-        self.playButton.backgroundColor = .red
+        self.playButton.backgroundColor = Settings.shared().getDisplayMode() == .Light ? UIColor.black : UIColor.white
+        self.playButton.setTitleColor(Settings.shared().getDisplayMode() == .Light ? UIColor.white : UIColor.black, for: .normal)
         self.playButton.layer.cornerRadius = 25
         self.playButton.addTarget(self, action: #selector(GameViewController.playButtonPressed(sender:)), for: .touchUpInside)
         self.view.addSubview(self.playButton)
@@ -139,7 +141,8 @@ public class GameViewController: UIViewController {
         // solution button
         self.solutionButton.frame = CGRect(x: 475, y: 145, width: 150, height: 50)
         self.solutionButton.setTitle("Solution", for: .normal)
-        self.solutionButton.backgroundColor = .red
+        self.solutionButton.backgroundColor = Settings.shared().getDisplayMode() == .Light ? UIColor.black : UIColor.white
+        self.solutionButton.setTitleColor(Settings.shared().getDisplayMode() == .Light ? UIColor.white : UIColor.black, for: .normal)
         self.solutionButton.layer.cornerRadius = 25
         self.solutionButton.addTarget(self, action: #selector(GameViewController.solutionButtonPressed(sender:)), for: .touchUpInside)
         self.view.addSubview(self.solutionButton)
@@ -207,24 +210,24 @@ public class GameViewController: UIViewController {
     
     private func lockButtons() {
         self.listenButton.isEnabled = false
-        self.listenButton.backgroundColor = .black
+        self.listenButton.backgroundColor = .gray
         
         self.playButton.isEnabled = false
-        self.playButton.backgroundColor = .black
+        self.playButton.backgroundColor = .gray
         
         self.solutionButton.isEnabled = false
-        self.solutionButton.backgroundColor = .black
+        self.solutionButton.backgroundColor = .gray
     }
     
     private func unlockButtons() {
         self.listenButton.isEnabled = true
-        self.listenButton.backgroundColor = .red
+        self.listenButton.backgroundColor = Settings.shared().getDisplayMode() == .Light ? UIColor.black : UIColor.white
         
         self.playButton.isEnabled = true
-        self.playButton.backgroundColor = .red
+        self.playButton.backgroundColor = Settings.shared().getDisplayMode() == .Light ? UIColor.black : UIColor.white
         
         self.solutionButton.isEnabled = true
-        self.solutionButton.backgroundColor = .red
+        self.solutionButton.backgroundColor = Settings.shared().getDisplayMode() == .Light ? UIColor.black : UIColor.white
     }
 
     private func victoryCheck() -> Bool {

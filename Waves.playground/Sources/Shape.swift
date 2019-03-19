@@ -21,4 +21,8 @@ public class Shape: CAShapeLayer {
         return self.color
     }
     
+    public func setColor(color: Color) {
+        self.color = color
+    }
+    
 }

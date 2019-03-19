@@ -13,7 +13,7 @@ public class Circle: Shape {
     }
 
     class func path() -> UIBezierPath {
-        let path = UIBezierPath(ovalIn: CGRect(x: 0, y: 0, width: 120, height: 120))
+        let path = UIBezierPath(ovalIn: CGRect(x: 0, y: 0, width: 160, height: 160))
         return path
     }
 }

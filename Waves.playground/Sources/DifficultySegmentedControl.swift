@@ -20,19 +20,19 @@ public class DifficultySegmentedControl: UIControl {
         }
     }
 
-    private var selectedLabelColor = UIColor.black {
+    private var selectedLabelColor = Settings.shared().getDisplayMode() == .Light ? UIColor.white : UIColor.black {
         didSet {
             self.setSelectedColors()
         }
     }
 
-    private var unselectedLabelColor = UIColor.black {
+    private var unselectedLabelColor = Settings.shared().getDisplayMode() == .Light ? UIColor.black : UIColor.white {
         didSet {
             self.setSelectedColors()
         }
     }
     
-    private var thumbColor = UIColor.yellow {
+    private var thumbColor = Settings.shared().getDisplayMode() == .Light ? UIColor.black : UIColor.white {
         didSet {
             self.thumbView.backgroundColor = self.thumbColor
         }
@@ -64,7 +64,7 @@ public class DifficultySegmentedControl: UIControl {
             label.text = self.levels[index - 1].rawValue
             label.backgroundColor = .clear
             label.textAlignment = .center
-            label.font = UIFont(name: "Helvetica", size: 15)
+            label.font = UIFont(name: "Helvetica", size: 22)
             label.textColor = index == 0 ? self.selectedLabelColor : self.unselectedLabelColor
             self.addSubview(label)
             self.labels.append(label)
@@ -114,7 +114,7 @@ public class DifficultySegmentedControl: UIControl {
         
         UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.8, options: [], animations: {
             self.thumbView.frame = label.frame
-            self.selectedLabelColor = .green
+            self.selectedLabelColor = Settings.shared().getDisplayMode() == .Light ? UIColor.white : UIColor.black
         }, completion: nil)
     }
     

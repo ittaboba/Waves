@@ -3,12 +3,12 @@ import PlaygroundSupport
 
 class HomeViewController: UIViewController {
     
+    private let displayMode = DisplayMode.Light
+    
     private let instruments = [
         InstrumentFactory.shared().createInstrument(withType: .Piano),
         InstrumentFactory.shared().createInstrument(withType: .Guitar),
-        InstrumentFactory.shared().createInstrument(withType: .Trumpet),
-        InstrumentFactory.shared().createInstrument(withType: .Guitar),
-        InstrumentFactory.shared().createInstrument(withType: .Piano)
+        InstrumentFactory.shared().createInstrument(withType: .Trumpet)
     ]
     
     private var difficultyLevel: DifficultyLevel = .Easy
@@ -23,19 +23,20 @@ class HomeViewController: UIViewController {
     }
     
     override func loadView() {
+        Settings.shared().setDisplayMode(mode: self.displayMode)
+        
         self.view = UIView(frame: CGRect(x: SharedValues.shared().getHomeView().getX(),
                                          y: SharedValues.shared().getHomeView().getY(),
                                          width: SharedValues.shared().getHomeView().getWidth(),
                                          height: SharedValues.shared().getHomeView().getHeight()))
-        self.view.backgroundColor = SharedValues.shared().getHomeView().getBackgroundColor()
-        
+        self.view.backgroundColor = Settings.shared().getDisplayMode() == .Light ? .white : .black
         
         let instrumentSegmentedControl = InstrumentSegmentedControl(frame: CGRect(x: SharedValues.shared().getInstrumentSegmentedControl().getX(),
                                                                                   y: SharedValues.shared().getInstrumentSegmentedControl().getY(),
                                                                                   width: SharedValues.shared().getInstrumentSegmentedControl().getWidth(),
                                                                                   height: SharedValues.shared().getInstrumentSegmentedControl().getHeight()),
                                                                     instruments: self.instruments)
-        instrumentSegmentedControl.backgroundColor = .clear
+        instrumentSegmentedControl.backgroundColor = .brown
         instrumentSegmentedControl.delegate = self
         self.view.addSubview(instrumentSegmentedControl)
         
@@ -52,12 +53,14 @@ class HomeViewController: UIViewController {
         
         let playButton = UIButton(type: .custom)
         playButton.setTitle(SharedValues.shared().getPlayButton().getTitle(), for: .normal)
-        playButton.backgroundColor = .red
         playButton.frame = CGRect(x: SharedValues.shared().getPlayButton().getX(),
                                   y: SharedValues.shared().getPlayButton().getY(),
                                   width: SharedValues.shared().getPlayButton().getWidth(),
                                   height: SharedValues.shared().getPlayButton().getHeight())
+        playButton.backgroundColor = Settings.shared().getDisplayMode() == .Light ? .black : .white
         playButton.titleLabel?.textAlignment = .center
+        playButton.setTitleColor(Settings.shared().getDisplayMode() == .Light ? .white : .black, for: .normal)
+        playButton.titleLabel?.font = UIFont(name: "Helvetica", size: 22)
         playButton.layer.cornerRadius = playButton.frame.size.height / 2
         playButton.addTarget(self, action: #selector(HomeViewController.playGame(sender:)), for: .touchUpInside)
         self.view.addSubview(playButton)
@@ -67,6 +70,7 @@ class HomeViewController: UIViewController {
         let gameViewController = GameViewController(withLevel: self.difficultyLevel, instrumentType: self.instrumentType)
         self.present(gameViewController, animated: true, completion: nil)
     }
+    
 }
 
 extension HomeViewController: DifficultySegmentedControlDelegate {

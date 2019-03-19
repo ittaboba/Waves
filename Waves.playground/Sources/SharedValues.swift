@@ -5,14 +5,12 @@ public struct View {
     private var y: CGFloat
     private var width: CGFloat
     private var height: CGFloat
-    private var backgroundColor: UIColor
     
-    init(x: CGFloat, y: CGFloat, width: CGFloat, height: CGFloat, backgroundColor: UIColor) {
+    init(x: CGFloat, y: CGFloat, width: CGFloat, height: CGFloat) {
         self.x = x
         self.y = y
         self.width = width
         self.height = height
-        self.backgroundColor = backgroundColor
     }
     
     public func getX() -> CGFloat {
@@ -30,10 +28,6 @@ public struct View {
     public func getHeight() -> CGFloat {
         return self.height
     }
-    
-    public func getBackgroundColor() -> UIColor {
-        return self.backgroundColor
-    }
 }
 
 enum ViewType {
@@ -43,9 +37,9 @@ enum ViewType {
     func get() -> View {
         switch self {
         case .Home:
-            return View(x: 0, y: 0, width: 700, height: 500, backgroundColor: .white)
+            return View(x: 0, y: 0, width: 700, height: 500)
         case .Game:
-            return View(x: 0, y: 0, width: 700, height: 500, backgroundColor: .white)
+            return View(x: 0, y: 0, width: 700, height: 500)
         }
     }
 }
@@ -89,7 +83,7 @@ enum SegmentedControlType {
         case .Difficulty:
             return SegmentedControl(x: 125, y: 280, width: 450, height: 50)
         case .Instrument:
-            return SegmentedControl(x: 50, y: 100, width: 600, height: 120)
+            return SegmentedControl(x: 50, y: 80, width: 600, height: 160)
         }
     }
 }

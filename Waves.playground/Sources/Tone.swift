@@ -19,7 +19,7 @@ public class Tone: UIView {
         
         // set Tone shape
         let toneShape = instrument.getType().getShape()
-        let transform = CGAffineTransform(scaleX: 0.4, y: 0.4)
+        let transform = CGAffineTransform(scaleX: 0.3, y: 0.3)
         toneShape.setAffineTransform(transform)
         self.layer.mask = toneShape
         

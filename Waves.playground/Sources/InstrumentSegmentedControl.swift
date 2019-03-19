@@ -20,19 +20,19 @@ public class InstrumentSegmentedControl: UIControl {
         }
     }
     
-    private var selectedIconColor = UIColor.white {
+    private var selectedIconColor = Settings.shared().getDisplayMode() == .Light ? UIColor.white : UIColor.black {
         didSet {
             self.setSelectedColors()
         }
     }
     
-    private var unselectedIconColor = UIColor.black {
+    private var unselectedIconColor = Settings.shared().getDisplayMode() == .Light ? UIColor.black : UIColor.white {
         didSet {
             self.setSelectedColors()
         }
     }
     
-    private var thumbColor = UIColor.brown {
+    private var thumbColor = UIColor.clear {
         didSet {
             self.thumbView.backgroundColor = self.thumbColor
         }
@@ -60,7 +60,7 @@ public class InstrumentSegmentedControl: UIControl {
         self.backgroundColor = .clear
         
         for index in 1 ... self.instruments.count {
-            let icon = UIImageView(frame: CGRect(x: 120 * (index - 1) + 40, y: 40, width: 40, height: 40))
+            let icon = UIImageView(frame: CGRect(x: (30 * index) + (60 * index) + ((40 + 60) * (index - 1)), y: 60, width: 40, height: 40))
             icon.image = UIImage(named: "icon.png")
             icon.image = icon.image?.withRenderingMode(.alwaysTemplate)
             icon.tintColor = index == 0 ? self.selectedIconColor : self.unselectedIconColor
@@ -112,7 +112,7 @@ public class InstrumentSegmentedControl: UIControl {
         icon.tintColor = self.selectedIconColor
         
         UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.8, options: [], animations: {
-            self.thumbView.center = icon.center
+            self.thumbView.frame = CGRect(x: icon.frame.origin.x - 60, y: icon.frame.origin.y - 60, width: 160, height: 160)
             
             let shape = self.instruments[self.selectedIndex].getType().getShape()
             

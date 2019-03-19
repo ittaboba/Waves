@@ -9,11 +9,11 @@ public enum InstrumentType {
     public func getShape() -> Shape {
         switch self {
         case .Piano:
-            return Hexagon(color: Color(hue: 240, saturation: 100, value: 100))
+            return Square(color: Color(hue: 240, saturation: 100, value: 100))
         case .Guitar:
-            return Square(color: Color(hue: 120, saturation: 100, value: 100))
+            return Triangle(color: Color(hue: 120, saturation: 100, value: 100))
         case .Trumpet:
-            return Pentagon(color: Color(hue: 240, saturation: 100, value: 100))
+            return Circle(color: Color(hue: 240, saturation: 100, value: 100))
         }
     }
 }
