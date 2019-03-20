@@ -1,7 +1,7 @@
 import UIKit
 
 public protocol InstrumentSegmentedControlDelegate: class {
-    func instrumentChanged(instrumentType: InstrumentType)
+    func instrumentChanged(instrument: Instrument)
 }
 
 public class InstrumentSegmentedControl: UIControl {
@@ -15,7 +15,7 @@ public class InstrumentSegmentedControl: UIControl {
     
     private var selectedIndex: Int = 0 {
         didSet {
-            self.delegate?.instrumentChanged(instrumentType: self.instruments[selectedIndex].getType())
+            self.delegate?.instrumentChanged(instrument: self.instruments[selectedIndex])
             self.displayNewSelectedIndex()
         }
     }

@@ -11,7 +11,11 @@ public class Circle: Shape {
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-
+    
+    public override init(layer: Any) {
+        super.init(layer: layer)
+    }
+    
     class func path() -> UIBezierPath {
         let path = UIBezierPath(ovalIn: CGRect(x: 0, y: 0, width: 160, height: 160))
         return path

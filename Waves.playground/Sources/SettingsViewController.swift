@@ -1,17 +1,24 @@
 import UIKit
 
+public protocol SettingsDelegate: class {
+    func settingsDidChange()
+}
 
 public class SettingsViewController: UIViewController {
     
     private var instrumentsCollectionView: UICollectionView!
     private let instrumentCellIdentifier = "instrumentCell"
-    private var instruments = Settings.shared().getDefaultInstruments()
+    private var instruments = Settings.shared().getInstrumentTypes()
     
     private var shapesCollectionView: UICollectionView!
     private let shapeCellIdentifier = "shapeCell"
-    private var shapes = Settings.shared().getDefaultShapes()
+    private var shapes = Settings.shared().getShapes()
     
     private var longPressGesture: UILongPressGestureRecognizer!
+    
+    private var selectedIndex = 0
+    
+    public weak var settingsDelegate: SettingsDelegate?
     
     public init() {
         super.init(nibName: nil, bundle: nil)
@@ -28,6 +35,19 @@ public class SettingsViewController: UIViewController {
                                          height: SharedValues.shared().getGameView().getHeight()))
         self.view.backgroundColor = Settings.shared().getDisplayMode() == .Light ? UIColor.white : UIColor.black
         
+        let dismissButton = UIButton(type: .custom)
+        dismissButton.setTitle("Close", for: .normal)
+        dismissButton.frame = CGRect(x: 20,
+                                      y: 20,
+                                      width: 120,
+                                      height: 40)
+        dismissButton.backgroundColor = Settings.shared().getDisplayMode() == .Light ? .black : .white
+        dismissButton.titleLabel?.textAlignment = .center
+        dismissButton.setTitleColor(Settings.shared().getDisplayMode() == .Light ? .white : .black, for: .normal)
+        dismissButton.titleLabel?.font = UIFont(name: "Helvetica", size: 22)
+        dismissButton.layer.cornerRadius = dismissButton.frame.size.height / 2
+        dismissButton.addTarget(self, action: #selector(SettingsViewController.dismissSettings(sender:)), for: .touchUpInside)
+        self.view.addSubview(dismissButton)
         
         let instrumentsCollectionView = UICollectionView(frame: CGRect(x: 85, y: 150, width: 530, height: 120),
                                                    collectionViewLayout: UICollectionViewFlowLayout())
@@ -42,6 +62,12 @@ public class SettingsViewController: UIViewController {
         shapesCollectionView.isScrollEnabled = false
         self.view.addSubview(shapesCollectionView)
         self.shapesCollectionView = shapesCollectionView
+    }
+    
+    @objc func dismissSettings(sender: UIButton) {
+        self.dismiss(animated: true, completion: {
+            self.settingsDelegate?.settingsDidChange()
+        })
     }
     
     override public func viewDidLoad() {
@@ -105,6 +131,7 @@ extension SettingsViewController: UICollectionViewDataSource {
             shape.setAffineTransform(transform)
             cell.layer.mask = shape
             cell.layer.backgroundColor = shape.getColor().toRGBColor().cgColor
+            
             return cell
         }
     }
@@ -112,6 +139,8 @@ extension SettingsViewController: UICollectionViewDataSource {
 }
 
 extension SettingsViewController: UICollectionViewDelegate {
+    
+    // change instrument's shape
     public func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
         if collectionView == self.shapesCollectionView {
             return true
@@ -123,26 +152,38 @@ extension SettingsViewController: UICollectionViewDelegate {
         if collectionView == self.shapesCollectionView {
             let shape = self.shapes.remove(at: sourceIndexPath.item)
             self.shapes.insert(shape, at: destinationIndexPath.item)
-            Settings.shared().setDefaultShapes(shapes: self.shapes)
+            Settings.shared().setShapes(shapes: self.shapes)
         }
     }
     
+    // change instrument's color
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == self.shapesCollectionView {
-            let cell = collectionView.cellForItem(at: indexPath)
+            self.selectedIndex = indexPath.item
+            let selectedCell = collectionView.cellForItem(at: indexPath)
             
-            let colorPaletteCollectionViewController = ColorPaletteCollectionViewController(withShape: self.shapes[indexPath.item])
+            let colorPaletteCollectionViewController = ColorPaletteCollectionViewController()
             colorPaletteCollectionViewController.modalPresentationStyle = .popover
+            colorPaletteCollectionViewController.paletteDelegate = self
             colorPaletteCollectionViewController.preferredContentSize = CGSize(width: 200, height: 200)
             
             present(colorPaletteCollectionViewController, animated: true, completion: nil)
             
             let popoverPresentationController = colorPaletteCollectionViewController.popoverPresentationController
-            popoverPresentationController?.delegate = self
-            popoverPresentationController?.sourceView = cell?.contentView
-            popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: cell!.contentView.frame.size.width, height: cell!.contentView.frame.size.height)
-            
+            popoverPresentationController?.sourceView = selectedCell!.contentView
+            popoverPresentationController?.sourceRect = CGRect(x: 0,
+                                                               y: 0,
+                                                               width: selectedCell!.contentView.frame.size.width,
+                                                               height: selectedCell!.contentView.frame.size.height)
         }
+    }
+}
+
+extension SettingsViewController: ColorPaletteDelegate {
+    public func didSelectColor(color: Color) {
+        self.shapes[self.selectedIndex].setColor(color: color)
+        Settings.shared().setShapes(shapes: self.shapes)
+        self.shapesCollectionView.reloadData()
     }
 }
 
@@ -161,19 +202,5 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 85
-    }
-}
-
-extension SettingsViewController: UIPopoverPresentationControllerDelegate {
-    public func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
-        print("present")
-    }
-    
-    public func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
-        print("dismiss")
-    }
-    
-    public func popoverPresentationControllerShouldDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) -> Bool {
-        return true
     }
 }

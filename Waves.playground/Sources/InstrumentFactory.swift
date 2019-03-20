@@ -7,13 +7,14 @@ public enum InstrumentType {
     case Trumpet
     
     public func getShape() -> Shape {
-        switch self {
-        case .Piano:
-            return Square(color: Color(hue: 240, saturation: 100, value: 100))
-        case .Guitar:
-            return Triangle(color: Color(hue: 120, saturation: 100, value: 100))
-        case .Trumpet:
-            return Circle(color: Color(hue: 240, saturation: 100, value: 100))
+        let shape = Settings.shared().getShape(forInstrument: self)
+        
+        if shape is Circle {
+            return Circle(color: shape.getColor())
+        } else if shape is Square {
+            return Square(color: shape.getColor())
+        } else {
+            return Triangle(color: shape.getColor())
         }
     }
 }

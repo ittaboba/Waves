@@ -23,7 +23,7 @@ public class GameViewController: UIViewController {
     private let engine = AVAudioEngine()
     
     private var instrument: Instrument!
-        
+    
     private var levelNotes = [Note]()
     private var solution = [Tone]()
     
@@ -42,9 +42,11 @@ public class GameViewController: UIViewController {
     
     private var attemptsRemaining = 0
     
-    public init(withLevel level: DifficultyLevel, instrumentType: InstrumentType) {
+    public init(withLevel level: DifficultyLevel, instrument: Instrument) {
         let gameDifficulty = DifficultyManager()
         var allNotes = [Note]()
+        
+        self.instrument = instrument
         
         // set level notes based on difficulty
         switch level {
@@ -62,7 +64,6 @@ public class GameViewController: UIViewController {
             allNotes = Pitch.shared.getNotes(forOctaves: .two)
         }
         
-        self.instrument = InstrumentFactory.shared().createInstrument(withType: instrumentType)
         // create tones for solution
         for note in self.levelNotes {
             let tone = Tone(withInstrument: self.instrument,

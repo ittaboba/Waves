@@ -2,7 +2,7 @@
 import AVFoundation
 
 public class TrumpetInstrument: Instrument {
-
+    
     public func getType() -> InstrumentType {
         return .Trumpet
     }

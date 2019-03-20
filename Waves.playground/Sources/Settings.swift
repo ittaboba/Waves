@@ -9,19 +9,11 @@ public class Settings {
     
     private var displayMode = DisplayMode.Light
     
-    private var defaultInstruments = [InstrumentType]()
+    private var instrumentTypes = [InstrumentType]()
     private var defaultColors = [Color]()
-    private var defaultShapes = [Shape]()
-    
     private var shapes = [Shape]()
     
     private init() {
-        self.defaultInstruments = [
-            InstrumentType.Piano,
-            InstrumentType.Guitar,
-            InstrumentType.Trumpet
-        ]
-        
         self.defaultColors = [
             Color(hue: 0, saturation: 100, value: 100),
             Color(hue: 60, saturation: 100, value: 100),
@@ -31,13 +23,17 @@ public class Settings {
             //...
         ]
         
-        self.defaultShapes = [
-            Circle(color: self.defaultColors[0]),
-            Square(color: self.defaultColors[1]),
-            Triangle(color: self.defaultColors[2])
+        self.instrumentTypes = [
+            InstrumentType.Piano,
+            InstrumentType.Guitar,
+            InstrumentType.Trumpet
         ]
         
-        self.shapes = self.defaultShapes
+        self.shapes = [
+            Circle(color: defaultColors[0]),
+            Square(color: defaultColors[1]),
+            Triangle(color: defaultColors[2])
+        ]
     }
     
     private static let sharedSettings = Settings()
@@ -54,30 +50,29 @@ public class Settings {
         self.displayMode = mode
     }
     
-    public func getDefaultInstruments() -> [InstrumentType] {
-        return self.defaultInstruments
+    public func getInstrumentTypes() -> [InstrumentType] {
+        return self.instrumentTypes
     }
     
     public func getDefaultColors() -> [Color] {
         return self.defaultColors
     }
     
-    public func getDefaultShapes() -> [Shape] {
-        return self.defaultShapes
+    public func getShapes() -> [Shape] {
+        return self.shapes
     }
     
-    public func setDefaultShapes(shapes: [Shape]) {
-        print(shapes)
-        self.defaultShapes = shapes
+    public func setShapes(shapes: [Shape]) {
+        self.shapes = shapes
     }
     
     public func getShape(forInstrument type: InstrumentType) -> Shape {
-        let instrumentIndex = self.defaultInstruments.firstIndex(of: type)
+        let instrumentIndex = self.instrumentTypes.firstIndex(of: type)
         return self.shapes[instrumentIndex!]
     }
     
     public func setShape(shape: Shape, forInstrument type: InstrumentType) {
-        let instrumentIndex = self.defaultInstruments.firstIndex(of: type)
+        let instrumentIndex = self.instrumentTypes.firstIndex(of: type)
         self.shapes[instrumentIndex!] = shape
     }
 }

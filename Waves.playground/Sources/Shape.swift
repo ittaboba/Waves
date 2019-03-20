@@ -2,7 +2,7 @@ import UIKit
 
 public class Shape: CAShapeLayer {
     
-    private var color: Color {
+    private var color = Color(hue: 0, saturation: 0, value: 0) {
         didSet {
             self.fillColor = self.color.toRGBColor().cgColor
         }
@@ -14,7 +14,11 @@ public class Shape: CAShapeLayer {
     }
     
     public required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
+    }
+    
+    public override init(layer: Any) {
+        super.init(layer: layer)
     }
     
     public func getColor() -> Color {

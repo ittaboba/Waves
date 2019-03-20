@@ -16,6 +16,10 @@ public class Triangle: Shape {
         super.init(coder: aDecoder)
     }
     
+    public override init(layer: Any) {
+        super.init(layer: layer)
+    }
+    
     class func path() -> UIBezierPath {
         let path = UIBezierPath()
         
