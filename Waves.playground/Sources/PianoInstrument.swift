@@ -8,7 +8,7 @@ public class PianoInstrument: Instrument {
     }
     
     public func getTimbre() -> AVAudioFile? {
-        if let url = Bundle.main.url(forResource: "C", withExtension: "wav") {
+        if let url = Bundle.main.url(forResource: "PianoC1", withExtension: "wav") {
             let timbre = try! AVAudioFile(forReading: url)
             return timbre
         }

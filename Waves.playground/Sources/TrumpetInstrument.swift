@@ -8,7 +8,7 @@ public class TrumpetInstrument: Instrument {
     }
 
     public func getTimbre() -> AVAudioFile? {
-        if let url = Bundle.main.url(forResource: "pianoC", withExtension: "mp3") {
+        if let url = Bundle.main.url(forResource: "TrumpetC1", withExtension: "wav") {
             let timbre = try! AVAudioFile(forReading: url)
             return timbre
         }
