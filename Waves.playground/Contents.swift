@@ -19,7 +19,7 @@ class HomeViewController: UIViewController {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
     }
     
     override func loadView() {
@@ -30,6 +30,20 @@ class HomeViewController: UIViewController {
                                          width: SharedValues.shared().getHomeView().getWidth(),
                                          height: SharedValues.shared().getHomeView().getHeight()))
         self.view.backgroundColor = Settings.shared().getDisplayMode() == .Light ? .white : .black
+        
+        let settingsButton = UIButton(type: .custom)
+        settingsButton.setTitle("Settings", for: .normal)
+        settingsButton.frame = CGRect(x: 460,
+                                      y: 20,
+                                      width: 120,
+                                      height: 40)
+        settingsButton.backgroundColor = Settings.shared().getDisplayMode() == .Light ? .black : .white
+        settingsButton.titleLabel?.textAlignment = .center
+        settingsButton.setTitleColor(Settings.shared().getDisplayMode() == .Light ? .white : .black, for: .normal)
+        settingsButton.titleLabel?.font = UIFont(name: "Helvetica", size: 22)
+        settingsButton.layer.cornerRadius = settingsButton.frame.size.height / 2
+        settingsButton.addTarget(self, action: #selector(HomeViewController.openSettings(sender:)), for: .touchUpInside)
+        self.view.addSubview(settingsButton)
         
         let instrumentSegmentedControl = InstrumentSegmentedControl(frame: CGRect(x: SharedValues.shared().getInstrumentSegmentedControl().getX(),
                                                                                   y: SharedValues.shared().getInstrumentSegmentedControl().getY(),
@@ -64,6 +78,11 @@ class HomeViewController: UIViewController {
         playButton.layer.cornerRadius = playButton.frame.size.height / 2
         playButton.addTarget(self, action: #selector(HomeViewController.playGame(sender:)), for: .touchUpInside)
         self.view.addSubview(playButton)
+    }
+    
+    @objc func openSettings(sender: UIButton) {
+        let settingsViewController = SettingsViewController()
+        self.present(settingsViewController, animated: true, completion: nil)
     }
     
     @objc func playGame(sender: UIButton) {

@@ -34,9 +34,7 @@ public class Settings {
         self.defaultShapes = [
             Circle(color: self.defaultColors[0]),
             Square(color: self.defaultColors[1]),
-            Triangle(color: self.defaultColors[2]),
-            Pentagon(color: self.defaultColors[3]),
-            Hexagon(color: self.defaultColors[4])
+            Triangle(color: self.defaultColors[2])
         ]
         
         self.shapes = self.defaultShapes
@@ -56,12 +54,21 @@ public class Settings {
         self.displayMode = mode
     }
     
+    public func getDefaultInstruments() -> [InstrumentType] {
+        return self.defaultInstruments
+    }
+    
     public func getDefaultColors() -> [Color] {
         return self.defaultColors
     }
     
     public func getDefaultShapes() -> [Shape] {
         return self.defaultShapes
+    }
+    
+    public func setDefaultShapes(shapes: [Shape]) {
+        print(shapes)
+        self.defaultShapes = shapes
     }
     
     public func getShape(forInstrument type: InstrumentType) -> Shape {
