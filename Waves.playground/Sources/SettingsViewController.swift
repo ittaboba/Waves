@@ -6,6 +6,9 @@ public protocol SettingsDelegate: class {
 
 public class SettingsViewController: UIViewController {
     
+    private let dismissButton = UIButton(type: .custom)
+    private var viewTitle: UILabel!
+    
     private var instrumentsCollectionView: UICollectionView!
     private let instrumentCellIdentifier = "instrumentCell"
     private var instruments = Settings.shared().getInstrumentTypes()
@@ -35,19 +38,28 @@ public class SettingsViewController: UIViewController {
                                          height: SharedValues.shared().getGameView().getHeight()))
         self.view.backgroundColor = Settings.shared().getDisplayMode() == .Light ? UIColor.white : UIColor.black
         
-        let dismissButton = UIButton(type: .custom)
-        dismissButton.setTitle("Close", for: .normal)
-        dismissButton.frame = CGRect(x: 20,
-                                      y: 20,
-                                      width: 120,
-                                      height: 40)
-        dismissButton.backgroundColor = Settings.shared().getDisplayMode() == .Light ? .black : .white
-        dismissButton.titleLabel?.textAlignment = .center
-        dismissButton.setTitleColor(Settings.shared().getDisplayMode() == .Light ? .white : .black, for: .normal)
-        dismissButton.titleLabel?.font = UIFont(name: "Helvetica", size: 22)
-        dismissButton.layer.cornerRadius = dismissButton.frame.size.height / 2
-        dismissButton.addTarget(self, action: #selector(SettingsViewController.dismissSettings(sender:)), for: .touchUpInside)
-        self.view.addSubview(dismissButton)
+        self.dismissButton.frame = CGRect(x: SharedValues.shared().getDismissButton().getX(),
+                                          y: SharedValues.shared().getDismissButton().getY(),
+                                          width: SharedValues.shared().getDismissButton().getWidth(),
+                                          height: SharedValues.shared().getDismissButton().getHeight())
+        self.dismissButton.setTitle(SharedValues.shared().getDismissButton().getTitle(), for: .normal)
+        self.dismissButton.backgroundColor = Settings.shared().getDisplayMode() == .Light ? .black : .white
+        self.dismissButton.titleLabel?.textAlignment = .center
+        self.dismissButton.setTitleColor(Settings.shared().getDisplayMode() == .Light ? .white : .black, for: .normal)
+        self.dismissButton.titleLabel?.font = UIFont(name: SharedValues.shared().getSanFranciscoBoldFont().getName(), size: 22)
+        self.dismissButton.layer.cornerRadius = SharedValues.shared().getDismissButton().getHeight() / 2
+        self.dismissButton.addTarget(self, action: #selector(SettingsViewController.dismissSettings(sender:)), for: .touchUpInside)
+        self.view.addSubview(self.dismissButton)
+        
+        self.viewTitle = UILabel(frame: CGRect(x: SharedValues.shared().getSettingsLabelTitle().getX(),
+                                               y: SharedValues.shared().getSettingsLabelTitle().getY(),
+                                               width: SharedValues.shared().getSettingsLabelTitle().getWidth(),
+                                               height: SharedValues.shared().getSettingsLabelTitle().getHeight()))
+        self.viewTitle.text = SharedValues.shared().getSettingsLabelTitle().getTitle()
+        self.viewTitle.textAlignment = .center
+        self.viewTitle.font = UIFont(name: SharedValues.shared().getSanFranciscoHeavyFont().getName(), size: 60)
+        self.viewTitle.textColor = Settings.shared().getDisplayMode() == .Light ? .black : .white
+        self.view.addSubview(self.viewTitle)
         
         let instrumentsCollectionView = UICollectionView(frame: CGRect(x: 85, y: 150, width: 530, height: 120),
                                                    collectionViewLayout: UICollectionViewFlowLayout())
@@ -162,6 +174,7 @@ extension SettingsViewController: UICollectionViewDelegate {
             self.selectedIndex = indexPath.item
             let selectedCell = collectionView.cellForItem(at: indexPath)
             
+            let shape = self.shapes[indexPath.item]
             let colorPaletteCollectionViewController = ColorPaletteCollectionViewController()
             colorPaletteCollectionViewController.modalPresentationStyle = .popover
             colorPaletteCollectionViewController.paletteDelegate = self

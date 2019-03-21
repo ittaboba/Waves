@@ -64,7 +64,7 @@ public class DifficultySegmentedControl: UIControl {
             label.text = self.levels[index - 1].rawValue
             label.backgroundColor = .clear
             label.textAlignment = .center
-            label.font = UIFont(name: "Helvetica", size: 22)
+            label.font = UIFont(name: SharedValues.shared().getSanFranciscoBoldFont().getName(), size: 22)
             label.textColor = index == 0 ? self.selectedLabelColor : self.unselectedLabelColor
             self.addSubview(label)
             self.labels.append(label)

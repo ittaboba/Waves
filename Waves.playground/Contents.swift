@@ -11,7 +11,13 @@ class HomeViewController: UIViewController {
     private var instruments = [Instrument]()
     private var instrumentTypes = [InstrumentType]()
     
+    private var viewTitle: UILabel!
+    
     private var instrumentSegmentedControl: InstrumentSegmentedControl!
+    private var difficultySegmentedControl: DifficultySegmentedControl!
+    
+    private let settingsButton = UIButton(type: .custom)
+    private let playButton = UIButton(type: .custom)
     
     public init() {
         super.init(nibName: nil, bundle: nil)
@@ -30,26 +36,36 @@ class HomeViewController: UIViewController {
                                          height: SharedValues.shared().getHomeView().getHeight()))
         self.view.backgroundColor = Settings.shared().getDisplayMode() == .Light ? .white : .black
         
-        
+        // create instruments
         self.instrumentTypes = Settings.shared().getInstrumentTypes()
         for instrumentType in self.instrumentTypes {
             let instrument = InstrumentFactory.shared().createInstrument(withType: instrumentType)
             self.instruments.append(instrument)
         }
         
-        let settingsButton = UIButton(type: .custom)
-        settingsButton.setTitle("Settings", for: .normal)
-        settingsButton.frame = CGRect(x: 460,
-                                      y: 20,
-                                      width: 120,
-                                      height: 40)
-        settingsButton.backgroundColor = Settings.shared().getDisplayMode() == .Light ? .black : .white
-        settingsButton.titleLabel?.textAlignment = .center
-        settingsButton.setTitleColor(Settings.shared().getDisplayMode() == .Light ? .white : .black, for: .normal)
-        settingsButton.titleLabel?.font = UIFont(name: "Helvetica", size: 22)
-        settingsButton.layer.cornerRadius = settingsButton.frame.size.height / 2
-        settingsButton.addTarget(self, action: #selector(HomeViewController.openSettings(sender:)), for: .touchUpInside)
-        self.view.addSubview(settingsButton)
+        self.viewTitle = UILabel(frame: CGRect(x: SharedValues.shared().getHomeLabelTitle().getX(),
+                                               y: SharedValues.shared().getHomeLabelTitle().getY(),
+                                               width: SharedValues.shared().getHomeLabelTitle().getWidth(),
+                                               height: SharedValues.shared().getHomeLabelTitle().getHeight()))
+        self.viewTitle.text = SharedValues.shared().getHomeLabelTitle().getTitle()
+        self.viewTitle.textAlignment = .center
+        self.viewTitle.font = UIFont(name: SharedValues.shared().getSanFranciscoHeavyFont().getName(), size: 60)
+        self.viewTitle.textColor = Settings.shared().getDisplayMode() == .Light ? .black : .white
+        self.view.addSubview(self.viewTitle)
+
+        self.settingsButton.setTitle(SharedValues.shared().getSettingsButton().getTitle(), for: .normal)
+        self.settingsButton.frame = CGRect(x: SharedValues.shared().getSettingsButton().getX(),
+                                           y: SharedValues.shared().getSettingsButton().getY(),
+                                           width: SharedValues.shared().getSettingsButton().getWidth(),
+                                           height: SharedValues.shared().getSettingsButton().getHeight())
+        self.settingsButton.backgroundColor = Settings.shared().getDisplayMode() == .Light ? .black : .white
+        self.settingsButton.titleLabel?.textAlignment = .center
+        self.settingsButton.setTitleColor(Settings.shared().getDisplayMode() == .Light ? .white : .black, for: .normal)
+        self.settingsButton.titleLabel?.font = UIFont(name: SharedValues.shared().getSanFranciscoBoldFont().getName(), size: 22)
+        self.settingsButton.layer.cornerRadius = SharedValues.shared().getSettingsButton().getHeight() / 2
+        self.settingsButton.addTarget(self, action: #selector(HomeViewController.openSettings(sender:)), for: .touchUpInside)
+        self.view.addSubview(self.settingsButton)
+        
         
         self.instrumentSegmentedControl =
             InstrumentSegmentedControl(frame:CGRect(x: SharedValues.shared().getInstrumentSegmentedControl().getX(),
@@ -62,29 +78,29 @@ class HomeViewController: UIViewController {
         self.view.addSubview(self.instrumentSegmentedControl)
         
         
-        let difficultySegmentedControl =
+        self.difficultySegmentedControl =
             DifficultySegmentedControl(frame: CGRect(x: SharedValues.shared().getDifficultySegmentedControl().getX(),
                                                      y: SharedValues.shared().getDifficultySegmentedControl().getY(),
                                                      width: SharedValues.shared().getDifficultySegmentedControl().getWidth(),
                                                      height: SharedValues.shared().getDifficultySegmentedControl().getHeight()),
                                        levels: DifficultyLevel.levels)
-        difficultySegmentedControl.backgroundColor = .clear
-        difficultySegmentedControl.delegate = self
-        self.view.addSubview(difficultySegmentedControl)
+        self.difficultySegmentedControl.backgroundColor = .clear
+        self.difficultySegmentedControl.delegate = self
+        self.view.addSubview(self.difficultySegmentedControl)
         
-        let playButton = UIButton(type: .custom)
-        playButton.setTitle(SharedValues.shared().getPlayButton().getTitle(), for: .normal)
-        playButton.frame = CGRect(x: SharedValues.shared().getPlayButton().getX(),
-                                  y: SharedValues.shared().getPlayButton().getY(),
-                                  width: SharedValues.shared().getPlayButton().getWidth(),
-                                  height: SharedValues.shared().getPlayButton().getHeight())
-        playButton.backgroundColor = Settings.shared().getDisplayMode() == .Light ? .black : .white
-        playButton.titleLabel?.textAlignment = .center
-        playButton.setTitleColor(Settings.shared().getDisplayMode() == .Light ? .white : .black, for: .normal)
-        playButton.titleLabel?.font = UIFont(name: "Helvetica", size: 22)
-        playButton.layer.cornerRadius = playButton.frame.size.height / 2
-        playButton.addTarget(self, action: #selector(HomeViewController.playGame(sender:)), for: .touchUpInside)
-        self.view.addSubview(playButton)
+        
+        self.playButton.setTitle(SharedValues.shared().getPlayButton().getTitle(), for: .normal)
+        self.playButton.frame = CGRect(x: SharedValues.shared().getPlayButton().getX(),
+                                       y: SharedValues.shared().getPlayButton().getY(),
+                                       width: SharedValues.shared().getPlayButton().getWidth(),
+                                       height: SharedValues.shared().getPlayButton().getHeight())
+        self.playButton.backgroundColor = Settings.shared().getDisplayMode() == .Light ? .black : .white
+        self.playButton.titleLabel?.textAlignment = .center
+        self.playButton.setTitleColor(Settings.shared().getDisplayMode() == .Light ? .white : .black, for: .normal)
+        self.playButton.titleLabel?.font = UIFont(name: SharedValues.shared().getSanFranciscoBoldFont().getName(), size: 22)
+        self.playButton.layer.cornerRadius = SharedValues.shared().getPlayButton().getHeight() / 2
+        self.playButton.addTarget(self, action: #selector(HomeViewController.playGame(sender:)), for: .touchUpInside)
+        self.view.addSubview(self.playButton)
     }
     
     @objc func openSettings(sender: UIButton) {
