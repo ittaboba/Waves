@@ -11,7 +11,7 @@ public class SettingsViewController: UIViewController {
     
     private var instrumentsCollectionView: UICollectionView!
     private let instrumentCellIdentifier = "instrumentCell"
-    private var instruments = Settings.shared().getInstrumentTypes()
+    private var instruments = [Instrument]()
     
     private var shapesCollectionView: UICollectionView!
     private let shapeCellIdentifier = "shapeCell"
@@ -23,7 +23,8 @@ public class SettingsViewController: UIViewController {
     
     public weak var settingsDelegate: SettingsDelegate?
     
-    public init() {
+    public init(withInstruments instruments: [Instrument]) {
+        self.instruments = instruments
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -132,8 +133,10 @@ extension SettingsViewController: UICollectionViewDataSource {
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == self.instrumentsCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.instrumentCellIdentifier, for: indexPath)
-            let icon = UIImageView(frame: CGRect(x: 0, y: 0, width: 120, height: 120))
-            icon.image = UIImage(named: "icon.png")
+            let icon = UIImageView(frame: CGRect(x: 0, y: 0, width: 120, height: 90))
+            icon.image = self.instruments[indexPath.item].getIcon()
+            icon.image = icon.image?.withRenderingMode(.alwaysTemplate)
+            icon.tintColor = Settings.shared().getDisplayMode() == .Light ? .black : .white
             cell.contentView.addSubview(icon)
             return cell
         } else {

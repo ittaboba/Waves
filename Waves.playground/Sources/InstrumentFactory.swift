@@ -1,10 +1,10 @@
 import UIKit
 import AVFoundation
 
-public enum InstrumentType {
-    case Piano
-    case Guitar
-    case Trumpet
+public enum InstrumentType: String {
+    case Piano = "Piano"
+    case Guitar = "Guitar"
+    case Trumpet = "Trumpet"
     
     public func getShape() -> Shape {
         let shape = Settings.shared().getShape(forInstrument: self)

@@ -3,7 +3,7 @@ import PlaygroundSupport
 
 class HomeViewController: UIViewController {
     
-    private let displayMode = DisplayMode.Light
+    private let displayMode = DisplayMode.Dark
     
     private var difficultyLevel: DifficultyLevel = .Easy
     private var selectedInstrument: Instrument = InstrumentFactory.shared().createInstrument(withType: .Piano)
@@ -104,7 +104,7 @@ class HomeViewController: UIViewController {
     }
     
     @objc func openSettings(sender: UIButton) {
-        let settingsViewController = SettingsViewController()
+        let settingsViewController = SettingsViewController(withInstruments: self.instruments)
         settingsViewController.settingsDelegate = self
         self.present(settingsViewController, animated: true, completion: nil)
     }

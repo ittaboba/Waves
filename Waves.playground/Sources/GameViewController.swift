@@ -36,6 +36,7 @@ public class GameViewController: UIViewController {
     private let placeholdersCellIdentifier = "placeholdersCell"
     private var placeholders = [Tone]()
     
+    private let dismissButton = UIButton(type: .custom)
     private let listenButton = UIButton(type: .custom)
     private let playButton = UIButton(type: .custom)
     private let solutionButton = UIButton(type: .custom)
@@ -107,44 +108,77 @@ public class GameViewController: UIViewController {
                                          height: SharedValues.shared().getGameView().getHeight()))
         self.view.backgroundColor = Settings.shared().getDisplayMode() == .Light ? UIColor.white : UIColor.black
         
+        // placeholders collection view
+        let placeholdersCollectionView = UICollectionView(frame: CGRect(x: 50, y: 100, width: 600, height: 90),
+                                                          collectionViewLayout: UICollectionViewFlowLayout())
+        placeholdersCollectionView.backgroundColor = .clear
+        self.view.addSubview(placeholdersCollectionView)
+        self.placeholdersCollectionView = placeholdersCollectionView
+        
         // tones collection view
-        let tonesCollectionView = UICollectionView(frame: CGRect(x: 50, y: 200, width: 600, height: 300),
+        let tonesCollectionView = UICollectionView(frame: CGRect(x: 50, y: 260, width: 600, height: 240),
                                                    collectionViewLayout: UICollectionViewFlowLayout())
         tonesCollectionView.backgroundColor = .clear
         self.view.addSubview(tonesCollectionView)
         self.tonesCollectionView = tonesCollectionView
         
-        // placeholders collection view
-        let placeholdersCollectionView = UICollectionView(frame: CGRect(x: 50, y: 50, width: 600, height: 90),
-                                                           collectionViewLayout: UICollectionViewFlowLayout())
-        placeholdersCollectionView.backgroundColor = .clear
-        self.view.addSubview(placeholdersCollectionView)
-        self.placeholdersCollectionView = placeholdersCollectionView
+        // dismiss button
+        self.dismissButton.frame = CGRect(x: SharedValues.shared().getDismissButton().getX(),
+                                          y: SharedValues.shared().getDismissButton().getY(),
+                                          width: SharedValues.shared().getDismissButton().getWidth(),
+                                          height: SharedValues.shared().getDismissButton().getHeight())
+        self.dismissButton.setTitle(SharedValues.shared().getDismissButton().getTitle(), for: .normal)
+        self.dismissButton.backgroundColor = Settings.shared().getDisplayMode() == .Light ? .black : .white
+        self.dismissButton.titleLabel?.textAlignment = .center
+        self.dismissButton.setTitleColor(Settings.shared().getDisplayMode() == .Light ? .white : .black, for: .normal)
+        self.dismissButton.titleLabel?.font = UIFont(name: SharedValues.shared().getSanFranciscoBoldFont().getName(), size: 22)
+        self.dismissButton.layer.cornerRadius = SharedValues.shared().getDismissButton().getHeight() / 2
+        self.dismissButton.addTarget(self, action: #selector(GameViewController.dismissGame(sender:)), for: .touchUpInside)
+        self.view.addSubview(self.dismissButton)
+        
+        // icon
+        let gameIcon = UIImageView(frame: CGRect(x: 200, y: 30, width: 80, height: 60))
+        gameIcon.image = self.instrument.getIcon()
+        gameIcon.image = gameIcon.image?.withRenderingMode(.alwaysTemplate)
+        gameIcon.tintColor = Settings.shared().getDisplayMode() == .Light ? .black : .white
+        self.view.addSubview(gameIcon)
+        
+        // title
+        let gameTitle = UILabel(frame: CGRect(x: 300, y: 30, width: 300, height: 60))
+        gameTitle.text = self.instrument.getType().rawValue
+        gameTitle.textAlignment = .left
+        gameTitle.textColor = Settings.shared().getDisplayMode() == .Light ? .black : .white
+        gameTitle.font = UIFont(name: SharedValues.shared().getSanFranciscoHeavyFont().getName(), size: 60)
+        gameTitle.backgroundColor = .clear
+        self.view.addSubview(gameTitle)
         
         // listen button
-        self.listenButton.frame = CGRect(x: 75, y: 145, width: 150, height: 50)
+        self.listenButton.frame = CGRect(x: 75, y: 200, width: 150, height: 50)
         self.listenButton.setTitle("Listen (\(self.attemptsRemaining))", for: .normal)
         self.listenButton.backgroundColor = Settings.shared().getDisplayMode() == .Light ? UIColor.black : UIColor.white
         self.listenButton.setTitleColor(Settings.shared().getDisplayMode() == .Light ? UIColor.white : UIColor.black, for: .normal)
-        self.listenButton.layer.cornerRadius = 25
+        self.listenButton.layer.cornerRadius = self.listenButton.frame.size.height/2
+        self.listenButton.titleLabel?.font = UIFont(name: SharedValues.shared().getSanFranciscoBoldFont().getName(), size: 22)
         self.listenButton.addTarget(self, action: #selector(GameViewController.listenButtonPressed(sender:)), for: .touchUpInside)
         self.view.addSubview(self.listenButton)
         
         // play button
-        self.playButton.frame = CGRect(x: 275, y: 145, width: 150, height: 50)
+        self.playButton.frame = CGRect(x: 275, y: 200, width: 150, height: 50)
         self.playButton.setTitle("Play", for: .normal)
         self.playButton.backgroundColor = Settings.shared().getDisplayMode() == .Light ? UIColor.black : UIColor.white
         self.playButton.setTitleColor(Settings.shared().getDisplayMode() == .Light ? UIColor.white : UIColor.black, for: .normal)
-        self.playButton.layer.cornerRadius = 25
+        self.playButton.layer.cornerRadius = self.playButton.frame.size.height/2
+        self.playButton.titleLabel?.font = UIFont(name: SharedValues.shared().getSanFranciscoBoldFont().getName(), size: 22)
         self.playButton.addTarget(self, action: #selector(GameViewController.playButtonPressed(sender:)), for: .touchUpInside)
         self.view.addSubview(self.playButton)
         
         // solution button
-        self.solutionButton.frame = CGRect(x: 475, y: 145, width: 150, height: 50)
+        self.solutionButton.frame = CGRect(x: 475, y: 200, width: 150, height: 50)
         self.solutionButton.setTitle("Solution", for: .normal)
         self.solutionButton.backgroundColor = Settings.shared().getDisplayMode() == .Light ? UIColor.black : UIColor.white
         self.solutionButton.setTitleColor(Settings.shared().getDisplayMode() == .Light ? UIColor.white : UIColor.black, for: .normal)
-        self.solutionButton.layer.cornerRadius = 25
+        self.solutionButton.layer.cornerRadius = self.solutionButton.frame.size.height/2
+        self.solutionButton.titleLabel?.font = UIFont(name: SharedValues.shared().getSanFranciscoBoldFont().getName(), size: 22)
         self.solutionButton.addTarget(self, action: #selector(GameViewController.solutionButtonPressed(sender:)), for: .touchUpInside)
         self.view.addSubview(self.solutionButton)
     }
@@ -152,13 +186,17 @@ public class GameViewController: UIViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
         
-        self.tonesCollectionView.delegate = self
-        self.tonesCollectionView.dataSource = self
-        self.tonesCollectionView.register(ToneCollectionViewCell.self, forCellWithReuseIdentifier: self.tonesCellIdentifier)
-        
         self.placeholdersCollectionView.delegate = self
         self.placeholdersCollectionView.dataSource = self
         self.placeholdersCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: self.placeholdersCellIdentifier)
+        
+        self.tonesCollectionView.delegate = self
+        self.tonesCollectionView.dataSource = self
+        self.tonesCollectionView.register(ToneCollectionViewCell.self, forCellWithReuseIdentifier: self.tonesCellIdentifier)
+    }
+    
+    @objc func dismissGame(sender: UIButton) {
+        self.dismiss(animated: true, completion: nil)
     }
     
     @objc func listenButtonPressed(sender: UIButton) {
