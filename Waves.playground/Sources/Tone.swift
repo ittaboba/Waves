@@ -18,9 +18,7 @@ public class Tone: UIView {
         super.init(frame: frame)
         
         // set Tone shape
-        let toneShape = instrument.getType().getShape()
-        let transform = CGAffineTransform(scaleX: 0.3, y: 0.3)
-        toneShape.setAffineTransform(transform)
+        let toneShape = instrument.getType().getShape(withSize: CGSize(width: 50, height: 50))
         self.layer.mask = toneShape
         
         // set Tone color based on Note

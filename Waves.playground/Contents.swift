@@ -4,6 +4,7 @@ import PlaygroundSupport
 
 class HomeViewController: UIViewController {
     
+    
     private let displayMode = DisplayMode.Dark
     
     private var difficultyLevel: DifficultyLevel = .Easy

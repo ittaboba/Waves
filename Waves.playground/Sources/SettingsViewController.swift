@@ -141,9 +141,7 @@ extension SettingsViewController: UICollectionViewDataSource {
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.shapeCellIdentifier, for: indexPath)
-            let shape = self.shapes[indexPath.item]
-            let transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
-            shape.setAffineTransform(transform)
+            let shape = self.instruments[indexPath.item].getType().getShape(withSize: CGSize(width: 120, height: 120))
             cell.layer.mask = shape
             cell.layer.backgroundColor = shape.getColor().toRGBColor().cgColor
             

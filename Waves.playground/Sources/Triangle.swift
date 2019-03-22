@@ -1,12 +1,21 @@
 
 import UIKit
 
+private let border: CGFloat = 10
+
 public class Triangle: Shape {
     
-    required public init(color: Color) {
+    private var size = CGSize(width: 160, height: 160) {
+        didSet{
+            self.path = Triangle.path(withSize: size).cgPath
+        }
+    }
+    
+    required public init(color: Color, size: CGSize) {
+        self.size = size
         super.init(color: color)
-        self.path = Triangle.path().cgPath
-        self.lineWidth = 20
+        self.path = Triangle.path(withSize: size).cgPath
+        self.lineWidth = border
         self.strokeColor = color.toRGBColor().cgColor
         self.lineJoin = .round
         self.lineCap = .round
@@ -16,17 +25,25 @@ public class Triangle: Shape {
         super.init(coder: aDecoder)
     }
     
+    public required init(color: Color) {
+        super.init(color: color)
+    }
+    
     public override init(layer: Any) {
         super.init(layer: layer)
     }
     
-    class func path() -> UIBezierPath {
+    public func setSize(size: CGSize) {
+        self.size = size
+    }
+    
+    class func path(withSize size: CGSize) -> UIBezierPath {
         let path = UIBezierPath()
         
-        path.move(to: CGPoint(x: 80, y: 10))
-        path.addLine(to: CGPoint(x: 150, y: 150))
-        path.addLine(to: CGPoint(x: 10, y: 150))
-        path.addLine(to: CGPoint(x: 80, y: 10))
+        path.move(to: CGPoint(x: size.width/2, y: border/2))
+        path.addLine(to: CGPoint(x: size.width - border/2, y: size.height - border/2))
+        path.addLine(to: CGPoint(x: border/2, y: size.height - border/2))
+        path.addLine(to: CGPoint(x: size.width/2, y: border/2))
                 
         return path
     }

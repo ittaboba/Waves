@@ -48,10 +48,7 @@ public class ColorPaletteCollectionViewController: UICollectionViewController {
     
     override public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.colorCellIdentifier, for: indexPath)
-        let shape = self.instrument.getType().getShape()
-        let transform = CGAffineTransform(scaleX: 0.3, y: 0.3)
-        shape.setAffineTransform(transform)
-        
+        let shape = self.instrument.getType().getShape(withSize: CGSize(width: 50, height: 50))        
         cell.layer.mask = shape
         cell.layer.backgroundColor = self.colors[indexPath.item].toRGBColor().cgColor
         

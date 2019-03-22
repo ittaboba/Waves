@@ -6,15 +6,15 @@ public enum InstrumentType: String {
     case Guitar = "Guitar"
     case Trumpet = "Trumpet"
     
-    public func getShape() -> Shape {
+    public func getShape(withSize size: CGSize) -> Shape {
         let shape = Settings.shared().getShape(forInstrument: self)
         
         if shape is Circle {
-            return Circle(color: shape.getColor())
+            return Circle(color: shape.getColor(), size: size)
         } else if shape is Square {
-            return Square(color: shape.getColor())
+            return Square(color: shape.getColor(), size: size)
         } else {
-            return Triangle(color: shape.getColor())
+            return Triangle(color: shape.getColor(), size: size)
         }
     }
 }

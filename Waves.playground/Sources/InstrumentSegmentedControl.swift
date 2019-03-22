@@ -104,7 +104,7 @@ public class InstrumentSegmentedControl: UIControl {
         selectFrame.size.width = newWidth
         self.thumbView.frame = selectFrame
         
-        let shape = self.instruments[self.selectedIndex].getType().getShape()
+        let shape = self.instruments[self.selectedIndex].getType().getShape(withSize: CGSize(width: thumbViewWidth, height: thumbViewHeight))
         self.thumbShape = shape
         
         self.displayNewSelectedIndex()
@@ -144,8 +144,7 @@ public class InstrumentSegmentedControl: UIControl {
                                           width: thumbViewWidth,
                                           height: thumbViewHeight)
             
-            let shape = self.instruments[self.selectedIndex].getType().getShape()
-            
+            let shape = self.instruments[self.selectedIndex].getType().getShape(withSize: CGSize(width: thumbViewWidth, height: thumbViewHeight))
             self.thumbColor = shape.getColor().toRGBColor()
             self.thumbShape = shape
             

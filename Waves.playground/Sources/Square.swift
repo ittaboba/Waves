@@ -1,11 +1,20 @@
 import UIKit
 
+private let border: CGFloat = 10
+
 public class Square: Shape {
     
-    required public init(color: Color) {
+    private var size = CGSize(width: 160, height: 160) {
+        didSet{
+            self.path = Square.path(withSize: self.size).cgPath
+        }
+    }
+    
+    required public init(color: Color, size: CGSize) {
+        self.size = size
         super.init(color: color)
-        self.path = Square.path().cgPath
-        self.lineWidth = 20
+        self.path = Square.path(withSize: size).cgPath
+        self.lineWidth = border
         self.strokeColor = color.toRGBColor().cgColor
         self.lineJoin = .round
         self.lineCap = .round
@@ -15,12 +24,23 @@ public class Square: Shape {
         super.init(coder: aDecoder)
     }
     
+    public required init(color: Color) {
+        super.init(color: color)
+    }
+    
     public override init(layer: Any) {
         super.init(layer: layer)
     }
     
-    class func path() -> UIBezierPath {
-        let path = UIBezierPath(rect: CGRect(x: 10, y: 10, width: 140, height: 140))
+    public func setSize(size: CGSize) {
+        self.size = size
+    }
+    
+    class func path(withSize size: CGSize) -> UIBezierPath {
+        let path = UIBezierPath(rect: CGRect(x: border/2,
+                                             y: border/2,
+                                             width: size.width - border,
+                                             height: size.height - border))
         return path
     }
 }
