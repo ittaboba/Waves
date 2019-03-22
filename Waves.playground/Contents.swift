@@ -1,4 +1,5 @@
 import UIKit
+import AVFoundation
 import PlaygroundSupport
 
 class HomeViewController: UIViewController {
@@ -18,6 +19,8 @@ class HomeViewController: UIViewController {
     
     private let settingsButton = UIButton(type: .custom)
     private let playButton = UIButton(type: .custom)
+    
+    private var sound: AVAudioPlayer!
     
     public init() {
         super.init(nibName: nil, bundle: nil)
@@ -114,6 +117,26 @@ class HomeViewController: UIViewController {
         self.present(gameViewController, animated: true, completion: nil)
     }
  
+    private func playSound(forInstrument instrument: Instrument) {
+        var filePath: String?
+        switch instrument.getType() {
+        case .Piano:
+            filePath = Bundle.main.path(forResource: "PianoC1", ofType: "wav")
+        case .Guitar:
+            filePath = Bundle.main.path(forResource: "GuitarC1", ofType: "wav")
+        case .Trumpet:
+            filePath = Bundle.main.path(forResource: "TrumpetC1", ofType: "wav")
+        }
+        let soundFileURL = URL(fileURLWithPath: filePath!)
+        do{
+            self.sound = try AVAudioPlayer(contentsOf: soundFileURL)
+            self.sound.volume = 0.6
+            self.sound.numberOfLoops = 0
+            self.sound.play()
+        } catch {
+            print("\(error)")
+        }
+    }
 }
 
 
@@ -132,6 +155,7 @@ extension HomeViewController: DifficultySegmentedControlDelegate {
 extension HomeViewController: InstrumentSegmentedControlDelegate {
     func instrumentChanged(instrument: Instrument) {
         self.selectedInstrument = instrument
+        self.playSound(forInstrument: instrument)
     }
 }
 
