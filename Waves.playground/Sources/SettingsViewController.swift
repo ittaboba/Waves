@@ -177,8 +177,8 @@ extension SettingsViewController: UICollectionViewDelegate {
             self.selectedIndex = indexPath.item
             let selectedCell = collectionView.cellForItem(at: indexPath)
             
-            let shape = self.shapes[indexPath.item]
-            let colorPaletteCollectionViewController = ColorPaletteCollectionViewController()
+            let instrument = self.instruments[indexPath.item]
+            let colorPaletteCollectionViewController = ColorPaletteCollectionViewController(withInstrument: instrument)
             colorPaletteCollectionViewController.modalPresentationStyle = .popover
             colorPaletteCollectionViewController.paletteDelegate = self
             colorPaletteCollectionViewController.preferredContentSize = CGSize(width: 200, height: 200)

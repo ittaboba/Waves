@@ -10,9 +10,12 @@ public class ColorPaletteCollectionViewController: UICollectionViewController {
     private let colorCellIdentifier = "colorCell"
     private var colors = Settings.shared().getDefaultColors()
     
+    private var instrument: Instrument!
+    
     public weak var paletteDelegate: ColorPaletteDelegate?
     
-    public init() {
+    public init(withInstrument instrument: Instrument) {
+        self.instrument = instrument
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -45,7 +48,13 @@ public class ColorPaletteCollectionViewController: UICollectionViewController {
     
     override public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.colorCellIdentifier, for: indexPath)
-        cell.backgroundColor = self.colors[indexPath.item].toRGBColor()
+        let shape = self.instrument.getType().getShape()
+        let transform = CGAffineTransform(scaleX: 0.3, y: 0.3)
+        shape.setAffineTransform(transform)
+        
+        cell.layer.mask = shape
+        cell.layer.backgroundColor = self.colors[indexPath.item].toRGBColor().cgColor
+        
         return cell
     }
     
