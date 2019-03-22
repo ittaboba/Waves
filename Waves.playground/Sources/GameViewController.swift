@@ -236,13 +236,12 @@ public class GameViewController: UIViewController {
             UIView.animate(withDuration: 0.2, animations: {
                 tones[index].transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
             })
-            tones[index].play(didFinish: {
-                DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
-                    UIView.animate(withDuration: 0.2, animations: {
-                        tones[index].transform = CGAffineTransform.identity
-                    })
-                    self.play(tones: tones, atIndex: index + 1, isSolution: isSolution)
+            tones[index].play(didFinish: nil)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                UIView.animate(withDuration: 0.2, animations: {
+                    tones[index].transform = CGAffineTransform.identity
                 })
+                self.play(tones: tones, atIndex: index + 1, isSolution: isSolution)
             })
         }
     }
