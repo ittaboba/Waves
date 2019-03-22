@@ -32,14 +32,11 @@ public struct View {
 }
 
 enum ViewType {
-    case Home
-    case Game
+    case Window
     
     func get() -> View {
         switch self {
-        case .Home:
-            return View(x: 0, y: 0, width: 700, height: 500)
-        case .Game:
+        case .Window:
             return View(x: 0, y: 0, width: 700, height: 500)
         }
     }
@@ -139,7 +136,7 @@ enum ButtonType {
         case .Settings:
             return Button(x: 550, y: 30, width: 120, height: 40, title: "Settings")
         case .Dismiss:
-            return Button(x: 30, y: 30, width: 120, height: 40, title: "Dismiss")
+            return Button(x: 30, y: 30, width: 120, height: 40, title: "Close")
         }
     }
 }
@@ -231,14 +228,9 @@ public class SharedValues {
     }
     
     // views
-    private let homeView = ViewType.Home.get()
-    public func getHomeView() -> View {
-        return self.homeView
-    }
-    
-    private let gameView = ViewType.Game.get()
-    public func getGameView() -> View {
-        return self.gameView
+    private let windowView = ViewType.Window.get()
+    public func getWindowView() -> View {
+        return self.windowView
     }
     
     // segmented controls

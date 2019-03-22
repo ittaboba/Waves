@@ -33,10 +33,10 @@ public class SettingsViewController: UIViewController {
     }
     
     override public func loadView() {
-        self.view = UIView(frame: CGRect(x: SharedValues.shared().getGameView().getX(),
-                                         y: SharedValues.shared().getGameView().getY(),
-                                         width: SharedValues.shared().getGameView().getWidth(),
-                                         height: SharedValues.shared().getGameView().getHeight()))
+        self.view = UIView(frame: CGRect(x: SharedValues.shared().getWindowView().getX(),
+                                         y: SharedValues.shared().getWindowView().getY(),
+                                         width: SharedValues.shared().getWindowView().getWidth(),
+                                         height: SharedValues.shared().getWindowView().getHeight()))
         self.view.backgroundColor = Settings.shared().getDisplayMode() == .Light ? UIColor.white : UIColor.black
         
         self.dismissButton.frame = CGRect(x: SharedValues.shared().getDismissButton().getX(),

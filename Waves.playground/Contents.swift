@@ -4,7 +4,6 @@ import PlaygroundSupport
 
 class HomeViewController: UIViewController {
     
-    
     private let displayMode = DisplayMode.Dark
     
     private var difficultyLevel: DifficultyLevel = .Easy
@@ -34,10 +33,10 @@ class HomeViewController: UIViewController {
     override func loadView() {
         Settings.shared().setDisplayMode(mode: self.displayMode)
         
-        self.view = UIView(frame: CGRect(x: SharedValues.shared().getHomeView().getX(),
-                                         y: SharedValues.shared().getHomeView().getY(),
-                                         width: SharedValues.shared().getHomeView().getWidth(),
-                                         height: SharedValues.shared().getHomeView().getHeight()))
+        self.view = UIView(frame: CGRect(x: SharedValues.shared().getWindowView().getX(),
+                                         y: SharedValues.shared().getWindowView().getY(),
+                                         width: SharedValues.shared().getWindowView().getWidth(),
+                                         height: SharedValues.shared().getWindowView().getHeight()))
         self.view.backgroundColor = Settings.shared().getDisplayMode() == .Light ? .white : .black
         
         // create instruments

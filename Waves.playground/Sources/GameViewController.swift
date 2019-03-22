@@ -102,10 +102,10 @@ public class GameViewController: UIViewController {
     
     override public func loadView() {
         // main view
-        self.view = UIView(frame: CGRect(x: SharedValues.shared().getGameView().getX(),
-                                         y: SharedValues.shared().getGameView().getY(),
-                                         width: SharedValues.shared().getGameView().getWidth(),
-                                         height: SharedValues.shared().getGameView().getHeight()))
+        self.view = UIView(frame: CGRect(x: SharedValues.shared().getWindowView().getX(),
+                                         y: SharedValues.shared().getWindowView().getY(),
+                                         width: SharedValues.shared().getWindowView().getWidth(),
+                                         height: SharedValues.shared().getWindowView().getHeight()))
         self.view.backgroundColor = Settings.shared().getDisplayMode() == .Light ? UIColor.white : UIColor.black
         
         // placeholders collection view
@@ -201,7 +201,7 @@ public class GameViewController: UIViewController {
     
     @objc func listenButtonPressed(sender: UIButton) {
         if self.attemptsRemaining == 0 {
-            self.showDefeatMessage()
+            self.showSolution()
         } else {
             self.lockButtons()
             self.attemptsRemaining -= 1
@@ -216,6 +216,10 @@ public class GameViewController: UIViewController {
     }
     
     @objc func solutionButtonPressed(sender: UIButton) {
+        self.showSolution()
+    }
+    
+    private func showSolution() {
         self.lockButtons()
         self.placeholders = self.solution
         self.placeholdersCollectionView.reloadData()
@@ -225,6 +229,9 @@ public class GameViewController: UIViewController {
     
     private func play(tones: [Tone], atIndex index: Int, isSolution: Bool) {
         if index == tones.count && isSolution {
+            if self.victoryCheck() {
+                self.showVictoryMessage()
+            }
             return
         } else if index == tones.count {
             self.unlockButtons()
@@ -278,11 +285,8 @@ public class GameViewController: UIViewController {
     }
     
     private func showVictoryMessage() {
-        print("victory")
-    }
-    
-    private func showDefeatMessage() {
-        print("defeat")
+        let victoryViewController = VictoryViewController()
+        self.present(victoryViewController, animated: true, completion: nil)
     }
 }
 
