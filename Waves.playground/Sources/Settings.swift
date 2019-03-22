@@ -16,10 +16,11 @@ public class Settings {
     private init() {
         self.defaultColors = [
             Color(hue: 0, saturation: 100, value: 100),
-            Color(hue: 60, saturation: 100, value: 100),
+            Color(hue: 240, saturation: 100, value: 100),
             Color(hue: 120, saturation: 100, value: 100),
+            Color(hue: 60, saturation: 100, value: 100),
             Color(hue: 180, saturation: 100, value: 100),
-            Color(hue: 240, saturation: 100, value: 100)
+            
             //...
         ]
         

@@ -1,7 +1,11 @@
-
+import UIKit
 import AVFoundation
 
 public class GuitarInstrument: Instrument {
+    
+    public func getIcon() -> UIImage? {
+        return UIImage(named: "GuitarIcon.png")
+    }
 
     public func getType() -> InstrumentType {
         return .Guitar

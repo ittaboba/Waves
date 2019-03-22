@@ -4,9 +4,21 @@ public protocol InstrumentSegmentedControlDelegate: class {
     func instrumentChanged(instrument: Instrument)
 }
 
+private let thumbViewWidth: CGFloat = 160
+private let thumbViewHeight: CGFloat = 160
+private let iconWidth: CGFloat = 60
+private let iconHeight: CGFloat = 45
+
 public class InstrumentSegmentedControl: UIControl {
     
     public weak var delegate: InstrumentSegmentedControlDelegate?
+    
+    private var viewWidth: CGFloat = 0
+    private var viewHeight: CGFloat = 0
+    
+    private var thumbViewHorizontalMargin: CGFloat = 0
+    private var iconHorizontalMargin: CGFloat = thumbViewWidth/2 - iconWidth/2
+    private var iconVerticalMargin: CGFloat = thumbViewHeight/2 - iconHeight/2
     
     private var icons = [UIImageView]()
     private var instruments = [Instrument]()
@@ -59,9 +71,22 @@ public class InstrumentSegmentedControl: UIControl {
     private func setupView() {
         self.backgroundColor = .clear
         
+        self.viewWidth = self.frame.size.width
+        self.viewHeight = self.frame.size.height
+        
+        self.thumbViewHorizontalMargin = (self.viewWidth - (CGFloat(self.instruments.count) * thumbViewWidth))/CGFloat(self.instruments.count - 1)
+        
         for index in 1 ... self.instruments.count {
-            let icon = UIImageView(frame: CGRect(x: (30 * index) + (60 * index) + ((40 + 60) * (index - 1)), y: 60, width: 40, height: 40))
-            icon.image = UIImage(named: "icon.png")
+            let iconOffset1 = self.iconHorizontalMargin * CGFloat(index)
+            let iconOffset2 = (iconWidth + self.iconHorizontalMargin + self.thumbViewHorizontalMargin) * CGFloat(index - 1)
+        
+            let x = iconOffset1 + iconOffset2
+            let icon = UIImageView(frame:
+                CGRect(x: x,
+                       y: self.iconVerticalMargin,
+                       width: iconWidth,
+                       height: iconHeight))
+            icon.image = self.instruments[index - 1].getIcon()
             icon.image = icon.image?.withRenderingMode(.alwaysTemplate)
             icon.tintColor = index == 0 ? self.selectedIconColor : self.unselectedIconColor
             self.addSubview(icon)
@@ -111,8 +136,13 @@ public class InstrumentSegmentedControl: UIControl {
         let icon = icons[selectedIndex]
         icon.tintColor = self.selectedIconColor
         
+        
+        
         UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.8, options: [], animations: {
-            self.thumbView.frame = CGRect(x: icon.frame.origin.x - 60, y: icon.frame.origin.y - 60, width: 160, height: 160)
+            self.thumbView.frame = CGRect(x: icon.frame.origin.x - self.iconHorizontalMargin,
+                                          y: icon.frame.origin.y - self.iconVerticalMargin,
+                                          width: thumbViewWidth,
+                                          height: thumbViewHeight)
             
             let shape = self.instruments[self.selectedIndex].getType().getShape()
             

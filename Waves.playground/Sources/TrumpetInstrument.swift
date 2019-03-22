@@ -1,7 +1,11 @@
-
+import UIKit
 import AVFoundation
 
 public class TrumpetInstrument: Instrument {
+    
+    public func getIcon() -> UIImage? {
+        return UIImage(named: "TrumpetIcon.png")
+    }
     
     public func getType() -> InstrumentType {
         return .Trumpet

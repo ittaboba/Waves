@@ -20,6 +20,7 @@ public enum InstrumentType {
 }
 
 public protocol Instrument {
+    func getIcon() -> UIImage?
     func getType() -> InstrumentType
     func getTimbre() -> AVAudioFile?
 }

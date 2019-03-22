@@ -23,7 +23,7 @@ public class ColorPaletteCollectionViewController: UICollectionViewController {
     override public func loadView() {
         self.collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 200, height: 200),
                                                collectionViewLayout: UICollectionViewFlowLayout())
-        self.collectionView.backgroundColor = .clear
+        self.collectionView.backgroundColor = Settings.shared().getDisplayMode() == .Light ? .black : .white
     }
     
     override public func viewDidLoad() {
