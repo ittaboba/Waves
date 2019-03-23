@@ -1,5 +1,11 @@
 //: ![](Cover.pdf)
 
+/*
+ "Color is the keyboard, the eyes are the harmonies, the soul is the piano with many strings.
+ The artist is the hand that plays, touching one key or another, to cause vibrations in the soul."
+ [Wassily Kandinsky]
+*/
+
 import UIKit
 import AVFoundation
 import PlaygroundSupport
@@ -23,7 +29,7 @@ class HomeViewController: UIViewController {
     private var difficultySegmentedControl: DifficultySegmentedControl!
     
     private let settingsButton = UIButton(type: .custom)
-    private let playButton = UIButton(type: .custom)
+    private let startButton = UIButton(type: .custom)
     
     private var sound: AVAudioPlayer!
     
@@ -87,15 +93,15 @@ class HomeViewController: UIViewController {
         self.view.addSubview(self.difficultySegmentedControl)
         
         // play button to start the game
-        self.playButton.frame = CGRect(x: 275, y: 420, width: 150, height: 50)
-        self.playButton.setTitle("Play", for: .normal)
-        self.playButton.backgroundColor = Settings.shared().getDisplayMode() == .Light ? .black : .white
-        self.playButton.titleLabel?.textAlignment = .center
-        self.playButton.setTitleColor(Settings.shared().getDisplayMode() == .Light ? .white : .black, for: .normal)
-        self.playButton.titleLabel?.font = UIFont(name: SharedValues.shared().getSanFranciscoBoldFont().getName(), size: 22)
-        self.playButton.layer.cornerRadius = self.playButton.frame.size.height / 2
-        self.playButton.addTarget(self, action: #selector(HomeViewController.playGame(sender:)), for: .touchUpInside)
-        self.view.addSubview(self.playButton)
+        self.startButton.frame = CGRect(x: 275, y: 420, width: 150, height: 50)
+        self.startButton.setTitle("Start", for: .normal)
+        self.startButton.backgroundColor = Settings.shared().getDisplayMode() == .Light ? .black : .white
+        self.startButton.titleLabel?.textAlignment = .center
+        self.startButton.setTitleColor(Settings.shared().getDisplayMode() == .Light ? .white : .black, for: .normal)
+        self.startButton.titleLabel?.font = UIFont(name: SharedValues.shared().getSanFranciscoBoldFont().getName(), size: 22)
+        self.startButton.layer.cornerRadius = self.startButton.frame.size.height / 2
+        self.startButton.addTarget(self, action: #selector(HomeViewController.startGame(sender:)), for: .touchUpInside)
+        self.view.addSubview(self.startButton)
     }
 
     @objc func openSettings(sender: UIButton) {
@@ -104,7 +110,7 @@ class HomeViewController: UIViewController {
         self.present(settingsViewController, animated: true, completion: nil)
     }
     
-    @objc func playGame(sender: UIButton) {
+    @objc func startGame(sender: UIButton) {
         let gameViewController = GameViewController(withLevel: self.difficultyLevel, instrument: self.selectedInstrument)
         self.present(gameViewController, animated: true, completion: nil)
     }
