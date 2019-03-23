@@ -1,10 +1,15 @@
+//: ![](Cover.pdf)
+
 import UIKit
 import AVFoundation
 import PlaygroundSupport
 
+/**
+ Change DisplayMode value to play in Light or Dark mode
+ */
+private let displayMode = DisplayMode.Light
+
 class HomeViewController: UIViewController {
-    
-    private let displayMode = DisplayMode.Dark
     
     private var difficultyLevel: DifficultyLevel = .Easy
     private var selectedInstrument: Instrument = InstrumentFactory.shared().createInstrument(withType: .Piano)
@@ -31,8 +36,8 @@ class HomeViewController: UIViewController {
     }
     
     override func loadView() {
-        Settings.shared().setDisplayMode(mode: self.displayMode)
-        
+        // view setup
+        Settings.shared().setDisplayMode(mode: displayMode)
         self.view = UIView(frame: CGRect(x: SharedValues.shared().getWindowView().getX(),
                                          y: SharedValues.shared().getWindowView().getY(),
                                          width: SharedValues.shared().getWindowView().getWidth(),
@@ -46,6 +51,7 @@ class HomeViewController: UIViewController {
             self.instruments.append(instrument)
         }
         
+        // title
         self.viewTitle = UILabel(frame: CGRect(x: SharedValues.shared().getHomeLabelTitle().getX(),
                                                y: SharedValues.shared().getHomeLabelTitle().getY(),
                                                width: SharedValues.shared().getHomeLabelTitle().getWidth(),
@@ -56,6 +62,7 @@ class HomeViewController: UIViewController {
         self.viewTitle.textColor = Settings.shared().getDisplayMode() == .Light ? .black : .white
         self.view.addSubview(self.viewTitle)
 
+        // settings button to change colors and shapes to instruments
         self.settingsButton.setTitle(SharedValues.shared().getSettingsButton().getTitle(), for: .normal)
         self.settingsButton.frame = CGRect(x: SharedValues.shared().getSettingsButton().getX(),
                                            y: SharedValues.shared().getSettingsButton().getY(),
@@ -69,7 +76,7 @@ class HomeViewController: UIViewController {
         self.settingsButton.addTarget(self, action: #selector(HomeViewController.openSettings(sender:)), for: .touchUpInside)
         self.view.addSubview(self.settingsButton)
         
-        
+        // segmented control to choose an instrument
         self.instrumentSegmentedControl =
             InstrumentSegmentedControl(frame:CGRect(x: SharedValues.shared().getInstrumentSegmentedControl().getX(),
                                                     y: SharedValues.shared().getInstrumentSegmentedControl().getY(),
@@ -80,7 +87,7 @@ class HomeViewController: UIViewController {
         self.instrumentSegmentedControl.delegate = self
         self.view.addSubview(self.instrumentSegmentedControl)
         
-        
+        // segmented control to choose game difficulty
         self.difficultySegmentedControl =
             DifficultySegmentedControl(frame: CGRect(x: SharedValues.shared().getDifficultySegmentedControl().getX(),
                                                      y: SharedValues.shared().getDifficultySegmentedControl().getY(),
@@ -91,7 +98,7 @@ class HomeViewController: UIViewController {
         self.difficultySegmentedControl.delegate = self
         self.view.addSubview(self.difficultySegmentedControl)
         
-        
+        // play button to start the game
         self.playButton.setTitle(SharedValues.shared().getPlayButton().getTitle(), for: .normal)
         self.playButton.frame = CGRect(x: SharedValues.shared().getPlayButton().getX(),
                                        y: SharedValues.shared().getPlayButton().getY(),
@@ -105,7 +112,7 @@ class HomeViewController: UIViewController {
         self.playButton.addTarget(self, action: #selector(HomeViewController.playGame(sender:)), for: .touchUpInside)
         self.view.addSubview(self.playButton)
     }
-    
+
     @objc func openSettings(sender: UIButton) {
         let settingsViewController = SettingsViewController(withInstruments: self.instruments)
         settingsViewController.settingsDelegate = self

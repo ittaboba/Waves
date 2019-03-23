@@ -185,7 +185,7 @@ enum LabelType {
     func get() -> Label {
         switch self {
         case .HomeTitle:
-            return Label(x: 200, y: 30, width: 300, height: 100, title: "Waves")
+            return Label(x: 200, y: 30, width: 300, height: 100, title: "Welcome")
         case .SettingsTitle:
             return Label(x: 200, y: 30, width: 300, height: 100, title: "Settings")
         }

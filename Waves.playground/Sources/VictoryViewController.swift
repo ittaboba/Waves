@@ -45,7 +45,7 @@ public class VictoryViewController: UIViewController {
     }
     
     @objc func dismissView(sender: UIButton) {
-        self.view.window!.rootViewController?.dismiss(animated: true, completion: nil)
+        self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
     }
 }
 

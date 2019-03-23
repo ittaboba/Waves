@@ -39,7 +39,8 @@ public class Tone: UIView {
                 self.backgroundColor = toneColor.toRGBColor()
             }
         } else {
-            self.backgroundColor = .gray
+            let placeholderColor = Color(hue: 0, saturation: 0, value: 80)
+            self.backgroundColor = placeholderColor.toRGBColor()
         }
         
         // set audioPlayer

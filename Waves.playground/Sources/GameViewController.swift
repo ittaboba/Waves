@@ -229,9 +229,6 @@ public class GameViewController: UIViewController {
     
     private func play(tones: [Tone], atIndex index: Int, isSolution: Bool) {
         if index == tones.count && isSolution {
-            if self.victoryCheck() {
-                self.showVictoryMessage()
-            }
             return
         } else if index == tones.count {
             self.unlockButtons()
@@ -254,14 +251,16 @@ public class GameViewController: UIViewController {
     }
     
     private func lockButtons() {
+        let lockedColor = Color(hue: 0, saturation: 0, value: 70)
+        
         self.listenButton.isEnabled = false
-        self.listenButton.backgroundColor = .gray
+        self.listenButton.backgroundColor = lockedColor.toRGBColor()
         
         self.playButton.isEnabled = false
-        self.playButton.backgroundColor = .gray
+        self.playButton.backgroundColor = lockedColor.toRGBColor()
         
         self.solutionButton.isEnabled = false
-        self.solutionButton.backgroundColor = .gray
+        self.solutionButton.backgroundColor = lockedColor.toRGBColor()
     }
     
     private func unlockButtons() {
