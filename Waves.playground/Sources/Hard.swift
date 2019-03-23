@@ -1,5 +1,3 @@
-
-
 public class Hard: Difficulty {
     
     public init() {}

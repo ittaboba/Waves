@@ -52,11 +52,8 @@ public class SettingsViewController: UIViewController {
         self.dismissButton.addTarget(self, action: #selector(SettingsViewController.dismissSettings(sender:)), for: .touchUpInside)
         self.view.addSubview(self.dismissButton)
         
-        self.viewTitle = UILabel(frame: CGRect(x: SharedValues.shared().getSettingsLabelTitle().getX(),
-                                               y: SharedValues.shared().getSettingsLabelTitle().getY(),
-                                               width: SharedValues.shared().getSettingsLabelTitle().getWidth(),
-                                               height: SharedValues.shared().getSettingsLabelTitle().getHeight()))
-        self.viewTitle.text = SharedValues.shared().getSettingsLabelTitle().getTitle()
+        self.viewTitle = UILabel(frame: CGRect(x: 200, y: 30, width: 300, height: 100))
+        self.viewTitle.text = "Settings"
         self.viewTitle.textAlignment = .center
         self.viewTitle.font = UIFont(name: SharedValues.shared().getSanFranciscoHeavyFont().getName(), size: 60)
         self.viewTitle.textColor = Settings.shared().getDisplayMode() == .Light ? .black : .white

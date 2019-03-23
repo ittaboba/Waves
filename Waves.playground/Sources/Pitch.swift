@@ -25,6 +25,7 @@ public class Pitch {
     
     public static let shared = Pitch()
     
+    
     public func getNotes(forOctaves octaves: Octaves) -> [Note] {
         switch octaves {
         case .one:

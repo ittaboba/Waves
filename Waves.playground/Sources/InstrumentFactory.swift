@@ -6,6 +6,10 @@ public enum InstrumentType: String {
     case Guitar = "Guitar"
     case Trumpet = "Trumpet"
     
+    /**
+     - returns:
+     The shape associated to the instrument
+     */
     public func getShape(withSize size: CGSize) -> Shape {
         let shape = Settings.shared().getShape(forInstrument: self)
         
@@ -34,7 +38,7 @@ public protocol Instrument {
     
     /**
      - returns:
-     The audio file containing the sample tone of the instrument. It refers to C1 that can be changed by applying a time pitch effect to produce different tones
+     The audio file containing the sample tone of the instrument. It refers to C1 tone and can be changed by applying a time pitch effect to produce different tones
      */
     func getTimbre() -> AVAudioFile?
 }
