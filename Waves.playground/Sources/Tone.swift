@@ -1,6 +1,8 @@
 import UIKit
 import AVFoundation
 
+private let sideLength: CGFloat = 50
+
 public class Tone: UIView {
     
     private var note: Note?
@@ -14,11 +16,11 @@ public class Tone: UIView {
         self.instrument = instrument
         self.engine = engine
         
-        let frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+        let frame = CGRect(x: 0, y: 0, width: sideLength, height: sideLength)
         super.init(frame: frame)
         
         // set Tone shape
-        let toneShape = instrument.getType().getShape(withSize: CGSize(width: 50, height: 50))
+        let toneShape = instrument.getType().getShape(withSize: CGSize(width: sideLength, height: sideLength))
         self.layer.mask = toneShape
         
         // set Tone color based on Note

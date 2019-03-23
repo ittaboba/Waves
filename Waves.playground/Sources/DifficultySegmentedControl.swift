@@ -1,6 +1,11 @@
 import UIKit
 
 public protocol DifficultySegmentedControlDelegate: class {
+    /**
+     Called when the user has changed the diffculty level selection
+     - parameters:
+     level: the new difficulty level type selected
+    */
     func difficultyLevelChanged(level: DifficultyLevel)
 }
 
@@ -11,7 +16,7 @@ public class DifficultySegmentedControl: UIControl {
     private var labels = [UILabel]()
     private var levels = [DifficultyLevel]()
     
-    private var thumbView = UIView()
+    private var selectedView = UIView()
     
     private var selectedIndex: Int = 0 {
         didSet {
@@ -32,9 +37,9 @@ public class DifficultySegmentedControl: UIControl {
         }
     }
     
-    private var thumbColor = Settings.shared().getDisplayMode() == .Light ? UIColor.black : UIColor.white {
+    private var selectedColor = Settings.shared().getDisplayMode() == .Light ? UIColor.black : UIColor.white {
         didSet {
-            self.thumbView.backgroundColor = self.thumbColor
+            self.selectedView.backgroundColor = self.selectedColor
         }
     }
     
@@ -70,7 +75,7 @@ public class DifficultySegmentedControl: UIControl {
             self.labels.append(label)
         }
         
-        self.insertSubview(self.thumbView, at: 0)
+        self.insertSubview(self.selectedView, at: 0)
     }
     
     override public func layoutSubviews() {
@@ -79,9 +84,9 @@ public class DifficultySegmentedControl: UIControl {
         var selectFrame = self.bounds
         let newWidth = selectFrame.size.width / CGFloat(self.levels.count)
         selectFrame.size.width = newWidth
-        self.thumbView.frame = selectFrame
+        self.selectedView.frame = selectFrame
         
-        self.thumbView.layer.cornerRadius = selectFrame.size.height / 2
+        self.selectedView.layer.cornerRadius = selectFrame.size.height / 2
         
         self.displayNewSelectedIndex()
     }
@@ -113,7 +118,7 @@ public class DifficultySegmentedControl: UIControl {
         label.textColor = self.selectedLabelColor
         
         UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.8, options: [], animations: {
-            self.thumbView.frame = label.frame
+            self.selectedView.frame = label.frame
             self.selectedLabelColor = Settings.shared().getDisplayMode() == .Light ? UIColor.white : UIColor.black
         }, completion: nil)
     }
@@ -127,7 +132,7 @@ public class DifficultySegmentedControl: UIControl {
             }
         }
         
-        self.thumbView.backgroundColor = self.thumbColor
+        self.selectedView.backgroundColor = self.selectedColor
     }
     
     private func setFont(){

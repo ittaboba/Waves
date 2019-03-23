@@ -1,11 +1,16 @@
 import UIKit
 
 public protocol InstrumentSegmentedControlDelegate: class {
+    /**
+     Called when the user has changed the instrument selection
+     - parameters:
+     instrument: the new instrument selected
+     */
     func instrumentChanged(instrument: Instrument)
 }
 
-private let thumbViewWidth: CGFloat = 160
-private let thumbViewHeight: CGFloat = 160
+private let selectedViewWidth: CGFloat = 160
+private let selectedViewHeight: CGFloat = 160
 private let iconWidth: CGFloat = 60
 private let iconHeight: CGFloat = 45
 
@@ -16,14 +21,14 @@ public class InstrumentSegmentedControl: UIControl {
     private var viewWidth: CGFloat = 0
     private var viewHeight: CGFloat = 0
     
-    private var thumbViewHorizontalMargin: CGFloat = 0
-    private var iconHorizontalMargin: CGFloat = thumbViewWidth/2 - iconWidth/2
-    private var iconVerticalMargin: CGFloat = thumbViewHeight/2 - iconHeight/2
+    private var selectedViewHorizontalMargin: CGFloat = 0
+    private var iconHorizontalMargin: CGFloat = selectedViewWidth/2 - iconWidth/2
+    private var iconVerticalMargin: CGFloat = selectedViewHeight/2 - iconHeight/2
     
     private var icons = [UIImageView]()
     private var instruments = [Instrument]()
     
-    private var thumbView = UIView()
+    private var selectedView = UIView()
     
     private var selectedIndex: Int = 0 {
         didSet {
@@ -44,15 +49,15 @@ public class InstrumentSegmentedControl: UIControl {
         }
     }
     
-    private var thumbColor = UIColor.clear {
+    private var selectedColor = UIColor.clear {
         didSet {
-            self.thumbView.backgroundColor = self.thumbColor
+            self.selectedView.backgroundColor = self.selectedColor
         }
     }
     
-    private var thumbShape = Shape(color: Color(hue: 0, saturation: 0, value: 0)) {
+    private var selectedShape = Shape(color: Color(hue: 0, saturation: 0, value: 0)) {
         didSet {
-            self.thumbView.layer.mask = self.thumbShape
+            self.selectedView.layer.mask = self.selectedShape
         }
     }
     
@@ -74,11 +79,11 @@ public class InstrumentSegmentedControl: UIControl {
         self.viewWidth = self.frame.size.width
         self.viewHeight = self.frame.size.height
         
-        self.thumbViewHorizontalMargin = (self.viewWidth - (CGFloat(self.instruments.count) * thumbViewWidth))/CGFloat(self.instruments.count - 1)
+        self.selectedViewHorizontalMargin = (self.viewWidth - (CGFloat(self.instruments.count) * selectedViewWidth))/CGFloat(self.instruments.count - 1)
         
         for index in 1 ... self.instruments.count {
             let iconOffset1 = self.iconHorizontalMargin * CGFloat(index)
-            let iconOffset2 = (iconWidth + self.iconHorizontalMargin + self.thumbViewHorizontalMargin) * CGFloat(index - 1)
+            let iconOffset2 = (iconWidth + self.iconHorizontalMargin + self.selectedViewHorizontalMargin) * CGFloat(index - 1)
         
             let x = iconOffset1 + iconOffset2
             let icon = UIImageView(frame:
@@ -93,7 +98,7 @@ public class InstrumentSegmentedControl: UIControl {
             self.icons.append(icon)
         }
         
-        self.insertSubview(self.thumbView, at: 0)
+        self.insertSubview(self.selectedView, at: 0)
     }
     
     override public func layoutSubviews() {
@@ -102,10 +107,10 @@ public class InstrumentSegmentedControl: UIControl {
         var selectFrame = self.bounds
         let newWidth = selectFrame.size.width / CGFloat(self.icons.count)
         selectFrame.size.width = newWidth
-        self.thumbView.frame = selectFrame
+        self.selectedView.frame = selectFrame
         
-        let shape = self.instruments[self.selectedIndex].getType().getShape(withSize: CGSize(width: thumbViewWidth, height: thumbViewHeight))
-        self.thumbShape = shape
+        let shape = self.instruments[self.selectedIndex].getType().getShape(withSize: CGSize(width: selectedViewWidth, height: selectedViewHeight))
+        self.selectedShape = shape
         
         self.displayNewSelectedIndex()
     }
@@ -139,14 +144,14 @@ public class InstrumentSegmentedControl: UIControl {
         
         
         UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.8, options: [], animations: {
-            self.thumbView.frame = CGRect(x: icon.frame.origin.x - self.iconHorizontalMargin,
+            self.selectedView.frame = CGRect(x: icon.frame.origin.x - self.iconHorizontalMargin,
                                           y: icon.frame.origin.y - self.iconVerticalMargin,
-                                          width: thumbViewWidth,
-                                          height: thumbViewHeight)
+                                          width: selectedViewWidth,
+                                          height: selectedViewHeight)
             
-            let shape = self.instruments[self.selectedIndex].getType().getShape(withSize: CGSize(width: thumbViewWidth, height: thumbViewHeight))
-            self.thumbColor = shape.getColor().toRGBColor()
-            self.thumbShape = shape
+            let shape = self.instruments[self.selectedIndex].getType().getShape(withSize: CGSize(width: selectedViewWidth, height: selectedViewHeight))
+            self.selectedColor = shape.getColor().toRGBColor()
+            self.selectedShape = shape
             
         }, completion: nil)
     }

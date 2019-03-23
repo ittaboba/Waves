@@ -20,8 +20,22 @@ public enum InstrumentType: String {
 }
 
 public protocol Instrument {
+    /**
+     - returns:
+     The icon associated with the instrument
+     */
     func getIcon() -> UIImage?
+    
+    /**
+     - returns:
+     An enum value containing the instrument type
+    */
     func getType() -> InstrumentType
+    
+    /**
+     - returns:
+     The audio file containing the sample tone of the instrument. It refers to C1 that can be changed by applying a time pitch effect to produce different tones
+     */
     func getTimbre() -> AVAudioFile?
 }
 

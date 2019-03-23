@@ -23,6 +23,11 @@ public class Color {
         self.value = value
     }
     
+    /**
+    Converts from the RGB color system to the HSV color system
+     - parameters:
+     color: The RGB color to be converted
+     */
     public func fromRGBColor(color: UIColor)  {
         
         var red: CGFloat = 0.0
@@ -80,6 +85,11 @@ public class Color {
         
     }
     
+    /**
+    Converts from the HSV color system to the RGB color system
+     - returns:
+     The converted RGB color
+     */
     public func toRGBColor() -> UIColor {
         var hue: CGFloat
         let saturation = self.saturation/100

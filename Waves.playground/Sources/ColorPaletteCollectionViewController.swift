@@ -1,8 +1,16 @@
 import UIKit
 
 public protocol ColorPaletteDelegate: class {
+    /**
+     Called when the user has selected a color inside the palette
+     - parameters:
+     color: the color selected
+     */
     func didSelectColor(color: Color)
 }
+
+private let viewSideLength: CGFloat = 200
+private let itemSideLength: CGFloat = 50
 
 public class ColorPaletteCollectionViewController: UICollectionViewController {
     
@@ -24,7 +32,7 @@ public class ColorPaletteCollectionViewController: UICollectionViewController {
     }
     
     override public func loadView() {
-        self.collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 200, height: 200),
+        self.collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: viewSideLength, height: viewSideLength),
                                                collectionViewLayout: UICollectionViewFlowLayout())
         self.collectionView.backgroundColor = Settings.shared().getDisplayMode() == .Light ? .black : .white
     }
@@ -48,7 +56,7 @@ public class ColorPaletteCollectionViewController: UICollectionViewController {
     
     override public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.colorCellIdentifier, for: indexPath)
-        let shape = self.instrument.getType().getShape(withSize: CGSize(width: 50, height: 50))        
+        let shape = self.instrument.getType().getShape(withSize: CGSize(width: itemSideLength, height: itemSideLength))
         cell.layer.mask = shape
         cell.layer.backgroundColor = self.colors[indexPath.item].toRGBColor().cgColor
         
@@ -69,7 +77,7 @@ extension ColorPaletteCollectionViewController: UICollectionViewDelegateFlowLayo
     public func collectionView(_ collectionView: UICollectionView,
                                layout collectionViewLayout: UICollectionViewLayout,
                                sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 50, height: 50)
+        return CGSize(width: itemSideLength, height: itemSideLength)
     }
     
     public func collectionView(_ collectionView: UICollectionView,
