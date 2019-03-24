@@ -15,8 +15,24 @@ import PlaygroundSupport
  */
 private let displayMode = DisplayMode.Dark
 
+
+public class Button: UIButton {
+    public override var isSelected: Bool {
+        didSet {
+            if self.isSelected {
+                UIView.animate(withDuration: 0.2, animations: {
+                    self.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+                })
+            } else {
+                UIView.animate(withDuration: 0.2, animations: {
+                    self.transform = CGAffineTransform.identity
+                })
+            }
+        }
+    }
+}
+
 class HomeViewController: UIViewController {
-    
     private var difficultyLevel: DifficultyLevel = .Easy
     private var selectedInstrument: Instrument = InstrumentFactory.shared().createInstrument(withType: .Piano)
     
@@ -25,11 +41,16 @@ class HomeViewController: UIViewController {
     
     private var viewTitle: UILabel!
     
-    private var instrumentSegmentedControl: InstrumentSegmentedControl!
-    private var difficultySegmentedControl: DifficultySegmentedControl!
-    
     private let settingsButton = UIButton(type: .custom)
     private let startButton = UIButton(type: .custom)
+    
+    private let pianoButton = Button(type: .custom)
+    private let guitarButton = Button(type: .custom)
+    private let trumpetButton = Button(type: .custom)
+    
+    private let easyButton = Button(type: .custom)
+    private let mediumButton = Button(type: .custom)
+    private let hardButton = Button(type: .custom)
     
     private var sound: AVAudioPlayer!
     
@@ -58,7 +79,7 @@ class HomeViewController: UIViewController {
         }
         
         // title
-        self.viewTitle = UILabel(frame: CGRect(x: 200, y: 30, width: 300, height: 100))
+        self.viewTitle = UILabel(frame: CGRect(x: 200, y: 30, width: 300, height: 60))
         self.viewTitle.text = "Welcome"
         self.viewTitle.textAlignment = .center
         self.viewTitle.font = UIFont(name: SharedValues.shared().getSanFranciscoHeavyFont().getName(), size: 60)
@@ -76,21 +97,76 @@ class HomeViewController: UIViewController {
         self.settingsButton.addTarget(self, action: #selector(HomeViewController.openSettings(sender:)), for: .touchUpInside)
         self.view.addSubview(self.settingsButton)
         
-        // segmented control to choose an instrument
-        self.instrumentSegmentedControl =
-            InstrumentSegmentedControl(frame:CGRect(x: 50, y: 140, width: 600, height: 160),
-                                       instruments: self.instruments)
-        self.instrumentSegmentedControl.backgroundColor = .clear
-        self.instrumentSegmentedControl.delegate = self
-        self.view.addSubview(self.instrumentSegmentedControl)
+        // piano button
+        self.pianoButton.frame = CGRect(x: 50, y: 120, width: 160, height: 160)
+        let pianoInstrument = self.instruments[0]
+        let pianoShape = pianoInstrument.getType().getShape(withSize: CGSize(width: 160, height: 160))
+        self.pianoButton.setTitle(InstrumentType.Piano.rawValue, for: .normal)
+        self.pianoButton.setImage(pianoInstrument.getIcon(), for: .normal)
+        self.pianoButton.imageEdgeInsets = UIEdgeInsets(top: 57.5, left: 50, bottom: 57.5, right: 50)
+        self.pianoButton.backgroundColor = pianoShape.getColor().toRGBColor()
+        self.pianoButton.layer.mask = pianoShape
+        self.pianoButton.isSelected = true
+        self.pianoButton.addTarget(self, action: #selector(HomeViewController.instrumentButtonPressed(sender:)), for: .touchUpInside)
+        self.view.addSubview(self.pianoButton)
         
-        // segmented control to choose game difficulty
-        self.difficultySegmentedControl =
-            DifficultySegmentedControl(frame: CGRect(x: 125, y: 330, width: 450, height: 50),
-                                       levels: DifficultyLevel.levels)
-        self.difficultySegmentedControl.backgroundColor = .clear
-        self.difficultySegmentedControl.delegate = self
-        self.view.addSubview(self.difficultySegmentedControl)
+        // guitar button
+        self.guitarButton.frame = CGRect(x: 270, y: 120, width: 160, height: 160)
+        let guitarInstrument = self.instruments[1]
+        let guitarShape = guitarInstrument.getType().getShape(withSize: CGSize(width: 160, height: 160))
+        self.guitarButton.setTitle(InstrumentType.Guitar.rawValue, for: .normal)
+        self.guitarButton.setImage(guitarInstrument.getIcon(), for: .normal)
+        self.guitarButton.imageEdgeInsets = UIEdgeInsets(top: 57.5, left: 50, bottom: 57.5, right: 50)
+        self.guitarButton.backgroundColor = guitarShape.getColor().toRGBColor()
+        self.guitarButton.layer.mask = guitarShape
+        self.guitarButton.addTarget(self, action: #selector(HomeViewController.instrumentButtonPressed(sender:)), for: .touchUpInside)
+        self.view.addSubview(self.guitarButton)
+        
+        // trumpet button
+        self.trumpetButton.frame = CGRect(x: 490, y: 120, width: 160, height: 160)
+        let trumpetInstrument = self.instruments[2]
+        let trumpetShape = trumpetInstrument.getType().getShape(withSize: CGSize(width: 160, height: 160))
+        self.trumpetButton.setTitle(InstrumentType.Trumpet.rawValue, for: .normal)
+        self.trumpetButton.setImage(trumpetInstrument.getIcon(), for: .normal)
+        self.trumpetButton.imageEdgeInsets = UIEdgeInsets(top: 57.5, left: 50, bottom: 57.5, right: 50)
+        self.trumpetButton.backgroundColor = trumpetShape.getColor().toRGBColor()
+        self.trumpetButton.layer.mask = trumpetShape
+        self.trumpetButton.addTarget(self, action: #selector(HomeViewController.instrumentButtonPressed(sender:)), for: .touchUpInside)
+        self.view.addSubview(self.trumpetButton)
+        
+        // easy button
+        self.easyButton.frame = CGRect(x: 80, y: 330, width: 150, height: 50)
+        self.easyButton.setTitle(DifficultyLevel.Easy.rawValue, for: .normal)
+        self.easyButton.backgroundColor = Settings.shared().getDisplayMode() == .Light ? .black : .white
+        self.easyButton.titleLabel?.textAlignment = .center
+        self.easyButton.setTitleColor(Settings.shared().getDisplayMode() == .Light ? .white : .black, for: .normal)
+        self.easyButton.titleLabel?.font = UIFont(name: SharedValues.shared().getSanFranciscoBoldFont().getName(), size: 22)
+        self.easyButton.layer.cornerRadius = self.easyButton.frame.size.height / 2
+        self.easyButton.isSelected = true
+        self.easyButton.addTarget(self, action: #selector(HomeViewController.difficultyButtonPressed(sender:)), for: .touchUpInside)
+        self.view.addSubview(self.easyButton)
+        
+        // medium button
+        self.mediumButton.frame = CGRect(x: 275, y: 330, width: 150, height: 50)
+        self.mediumButton.setTitle(DifficultyLevel.Medium.rawValue, for: .normal)
+        self.mediumButton.backgroundColor = Settings.shared().getDisplayMode() == .Light ? .black : .white
+        self.mediumButton.titleLabel?.textAlignment = .center
+        self.mediumButton.setTitleColor(Settings.shared().getDisplayMode() == .Light ? .white : .black, for: .normal)
+        self.mediumButton.titleLabel?.font = UIFont(name: SharedValues.shared().getSanFranciscoBoldFont().getName(), size: 22)
+        self.mediumButton.layer.cornerRadius = self.mediumButton.frame.size.height / 2
+        self.mediumButton.addTarget(self, action: #selector(HomeViewController.difficultyButtonPressed(sender:)), for: .touchUpInside)
+        self.view.addSubview(self.mediumButton)
+        
+        // hard button
+        self.hardButton.frame = CGRect(x: 470, y: 330, width: 150, height: 50)
+        self.hardButton.setTitle(DifficultyLevel.Hard.rawValue, for: .normal)
+        self.hardButton.backgroundColor = Settings.shared().getDisplayMode() == .Light ? .black : .white
+        self.hardButton.titleLabel?.textAlignment = .center
+        self.hardButton.setTitleColor(Settings.shared().getDisplayMode() == .Light ? .white : .black, for: .normal)
+        self.hardButton.titleLabel?.font = UIFont(name: SharedValues.shared().getSanFranciscoBoldFont().getName(), size: 22)
+        self.hardButton.layer.cornerRadius = self.hardButton.frame.size.height / 2
+        self.hardButton.addTarget(self, action: #selector(HomeViewController.difficultyButtonPressed(sender:)), for: .touchUpInside)
+        self.view.addSubview(self.hardButton)
         
         // play button to start the game
         self.startButton.frame = CGRect(x: 275, y: 420, width: 150, height: 50)
@@ -108,6 +184,26 @@ class HomeViewController: UIViewController {
         let settingsViewController = SettingsViewController(withInstruments: self.instruments)
         settingsViewController.settingsDelegate = self
         self.present(settingsViewController, animated: true, completion: nil)
+    }
+    
+    @objc func instrumentButtonPressed(sender: UIButton) {
+        if let title = sender.titleLabel?.text {
+            let instrumentType = InstrumentType(rawValue: title)!
+            self.selectedInstrument = self.instruments.first(where: {$0.getType() == instrumentType})!
+            self.pianoButton.isSelected = instrumentType == .Piano
+            self.guitarButton.isSelected = instrumentType == .Guitar
+            self.trumpetButton.isSelected = instrumentType == .Trumpet
+            self.playSound(forInstrument: self.selectedInstrument)
+        }
+    }
+    
+    @objc func difficultyButtonPressed(sender: UIButton) {
+        if let title = sender.titleLabel?.text {
+            self.difficultyLevel = DifficultyLevel(rawValue: title)!
+            self.easyButton.isSelected = self.difficultyLevel == .Easy
+            self.mediumButton.isSelected = self.difficultyLevel == .Medium
+            self.hardButton.isSelected = self.difficultyLevel == .Hard
+        }
     }
     
     @objc func startGame(sender: UIButton) {
@@ -137,23 +233,19 @@ class HomeViewController: UIViewController {
     }
 }
 
-
 extension HomeViewController: SettingsDelegate {
     func settingsDidChange() {
-        self.instrumentSegmentedControl.setNeedsLayout()
-    }
-}
-
-extension HomeViewController: DifficultySegmentedControlDelegate {
-    func difficultyLevelChanged(level: DifficultyLevel) {
-        self.difficultyLevel = level
-    }
-}
-
-extension HomeViewController: InstrumentSegmentedControlDelegate {
-    func instrumentChanged(instrument: Instrument) {
-        self.selectedInstrument = instrument
-        self.playSound(forInstrument: instrument)
+        let pianoShape = self.instruments[0].getType().getShape(withSize: CGSize(width: 160, height: 160))
+        self.pianoButton.backgroundColor = pianoShape.getColor().toRGBColor()
+        self.pianoButton.layer.mask = pianoShape
+        
+        let guitarShape = self.instruments[1].getType().getShape(withSize: CGSize(width: 160, height: 160))
+        self.guitarButton.backgroundColor = guitarShape.getColor().toRGBColor()
+        self.guitarButton.layer.mask = guitarShape
+        
+        let trumpetShape = self.instruments[2].getType().getShape(withSize: CGSize(width: 160, height: 160))
+        self.trumpetButton.backgroundColor = trumpetShape.getColor().toRGBColor()
+        self.trumpetButton.layer.mask = trumpetShape
     }
 }
 
