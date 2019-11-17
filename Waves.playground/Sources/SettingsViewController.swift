@@ -47,7 +47,7 @@ public class SettingsViewController: UIViewController {
         self.dismissButton.backgroundColor = Settings.shared().getDisplayMode() == .Light ? .black : .white
         self.dismissButton.titleLabel?.textAlignment = .center
         self.dismissButton.setTitleColor(Settings.shared().getDisplayMode() == .Light ? .white : .black, for: .normal)
-        self.dismissButton.titleLabel?.font = UIFont(name: SharedValues.shared().getSanFranciscoBoldFont().getName(), size: 22)
+        self.dismissButton.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: UIFont.Weight.bold)
         self.dismissButton.layer.cornerRadius = SharedValues.shared().getDismissButton().getHeight() / 2
         self.dismissButton.addTarget(self, action: #selector(SettingsViewController.dismissSettings(sender:)), for: .touchUpInside)
         self.view.addSubview(self.dismissButton)
@@ -55,7 +55,7 @@ public class SettingsViewController: UIViewController {
         self.viewTitle = UILabel(frame: CGRect(x: 200, y: 30, width: 300, height: 80))
         self.viewTitle.text = "Settings"
         self.viewTitle.textAlignment = .center
-        self.viewTitle.font = UIFont(name: SharedValues.shared().getSanFranciscoHeavyFont().getName(), size: 60)
+        self.viewTitle.font = UIFont.systemFont(ofSize: 60, weight: UIFont.Weight.heavy)
         self.viewTitle.textColor = Settings.shared().getDisplayMode() == .Light ? .black : .white
         self.view.addSubview(self.viewTitle)
         

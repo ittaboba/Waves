@@ -27,7 +27,7 @@ public class VictoryViewController: UIViewController {
         message.text = "You won!"
         message.textColor = Settings.shared().getDisplayMode() == .Light ? .black : .white
         message.textAlignment = .center
-        message.font = UIFont(name: SharedValues.shared().getSanFranciscoHeavyFont().getName(), size: 60)
+        message.font = UIFont.systemFont(ofSize: 60, weight: UIFont.Weight.heavy)
         self.view.addSubview(message)
         
         let dismissButton = UIButton(frame: CGRect(x: SharedValues.shared().getDismissButton().getX(),
@@ -38,7 +38,7 @@ public class VictoryViewController: UIViewController {
         dismissButton.backgroundColor = Settings.shared().getDisplayMode() == .Light ? .black : .white
         dismissButton.titleLabel?.textAlignment = .center
         dismissButton.setTitleColor(Settings.shared().getDisplayMode() == .Light ? .white : .black, for: .normal)
-        dismissButton.titleLabel?.font = UIFont(name: SharedValues.shared().getSanFranciscoBoldFont().getName(), size: 22)
+        dismissButton.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: UIFont.Weight.bold)
         dismissButton.layer.cornerRadius = SharedValues.shared().getDismissButton().getHeight() / 2
         dismissButton.addTarget(self, action: #selector(VictoryViewController.dismissView(sender:)), for: .touchUpInside)
         self.view.addSubview(dismissButton)

@@ -82,7 +82,7 @@ class HomeViewController: UIViewController {
         self.viewTitle = UILabel(frame: CGRect(x: 200, y: 30, width: 300, height: 60))
         self.viewTitle.text = "Welcome"
         self.viewTitle.textAlignment = .center
-        self.viewTitle.font = UIFont(name: SharedValues.shared().getSanFranciscoHeavyFont().getName(), size: 60)
+        self.viewTitle.font = UIFont.systemFont(ofSize: 60, weight: UIFont.Weight.heavy)
         self.viewTitle.textColor = Settings.shared().getDisplayMode() == .Light ? .black : .white
         self.view.addSubview(self.viewTitle)
 
@@ -92,7 +92,7 @@ class HomeViewController: UIViewController {
         self.settingsButton.backgroundColor = Settings.shared().getDisplayMode() == .Light ? .black : .white
         self.settingsButton.titleLabel?.textAlignment = .center
         self.settingsButton.setTitleColor(Settings.shared().getDisplayMode() == .Light ? .white : .black, for: .normal)
-        self.settingsButton.titleLabel?.font = UIFont(name: SharedValues.shared().getSanFranciscoBoldFont().getName(), size: 22)
+        self.settingsButton.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: UIFont.Weight.bold)
         self.settingsButton.layer.cornerRadius = self.settingsButton.frame.size.height / 2
         self.settingsButton.addTarget(self, action: #selector(HomeViewController.openSettings(sender:)), for: .touchUpInside)
         self.view.addSubview(self.settingsButton)
@@ -101,7 +101,7 @@ class HomeViewController: UIViewController {
         self.pianoButton.frame = CGRect(x: 50, y: 120, width: 160, height: 160)
         let pianoInstrument = self.instruments[0]
         let pianoShape = pianoInstrument.getType().getShape(withSize: CGSize(width: 160, height: 160))
-        self.pianoButton.setTitle(InstrumentType.Piano.rawValue, for: .normal)
+        self.pianoButton.tag = 0
         self.pianoButton.setImage(pianoInstrument.getIcon(), for: .normal)
         self.pianoButton.imageEdgeInsets = UIEdgeInsets(top: 57.5, left: 50, bottom: 57.5, right: 50)
         self.pianoButton.backgroundColor = pianoShape.getColor().toRGBColor()
@@ -114,7 +114,7 @@ class HomeViewController: UIViewController {
         self.guitarButton.frame = CGRect(x: 270, y: 120, width: 160, height: 160)
         let guitarInstrument = self.instruments[1]
         let guitarShape = guitarInstrument.getType().getShape(withSize: CGSize(width: 160, height: 160))
-        self.guitarButton.setTitle(InstrumentType.Guitar.rawValue, for: .normal)
+        self.guitarButton.tag = 1
         self.guitarButton.setImage(guitarInstrument.getIcon(), for: .normal)
         self.guitarButton.imageEdgeInsets = UIEdgeInsets(top: 57.5, left: 50, bottom: 57.5, right: 50)
         self.guitarButton.backgroundColor = guitarShape.getColor().toRGBColor()
@@ -126,7 +126,7 @@ class HomeViewController: UIViewController {
         self.trumpetButton.frame = CGRect(x: 490, y: 120, width: 160, height: 160)
         let trumpetInstrument = self.instruments[2]
         let trumpetShape = trumpetInstrument.getType().getShape(withSize: CGSize(width: 160, height: 160))
-        self.trumpetButton.setTitle(InstrumentType.Trumpet.rawValue, for: .normal)
+        self.trumpetButton.tag = 2
         self.trumpetButton.setImage(trumpetInstrument.getIcon(), for: .normal)
         self.trumpetButton.imageEdgeInsets = UIEdgeInsets(top: 57.5, left: 50, bottom: 57.5, right: 50)
         self.trumpetButton.backgroundColor = trumpetShape.getColor().toRGBColor()
@@ -140,7 +140,7 @@ class HomeViewController: UIViewController {
         self.easyButton.backgroundColor = Settings.shared().getDisplayMode() == .Light ? .black : .white
         self.easyButton.titleLabel?.textAlignment = .center
         self.easyButton.setTitleColor(Settings.shared().getDisplayMode() == .Light ? .white : .black, for: .normal)
-        self.easyButton.titleLabel?.font = UIFont(name: SharedValues.shared().getSanFranciscoBoldFont().getName(), size: 22)
+        self.easyButton.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: UIFont.Weight.bold)
         self.easyButton.layer.cornerRadius = self.easyButton.frame.size.height / 2
         self.easyButton.isSelected = true
         self.easyButton.addTarget(self, action: #selector(HomeViewController.difficultyButtonPressed(sender:)), for: .touchUpInside)
@@ -152,7 +152,7 @@ class HomeViewController: UIViewController {
         self.mediumButton.backgroundColor = Settings.shared().getDisplayMode() == .Light ? .black : .white
         self.mediumButton.titleLabel?.textAlignment = .center
         self.mediumButton.setTitleColor(Settings.shared().getDisplayMode() == .Light ? .white : .black, for: .normal)
-        self.mediumButton.titleLabel?.font = UIFont(name: SharedValues.shared().getSanFranciscoBoldFont().getName(), size: 22)
+        self.mediumButton.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: UIFont.Weight.bold)
         self.mediumButton.layer.cornerRadius = self.mediumButton.frame.size.height / 2
         self.mediumButton.addTarget(self, action: #selector(HomeViewController.difficultyButtonPressed(sender:)), for: .touchUpInside)
         self.view.addSubview(self.mediumButton)
@@ -163,7 +163,7 @@ class HomeViewController: UIViewController {
         self.hardButton.backgroundColor = Settings.shared().getDisplayMode() == .Light ? .black : .white
         self.hardButton.titleLabel?.textAlignment = .center
         self.hardButton.setTitleColor(Settings.shared().getDisplayMode() == .Light ? .white : .black, for: .normal)
-        self.hardButton.titleLabel?.font = UIFont(name: SharedValues.shared().getSanFranciscoBoldFont().getName(), size: 22)
+        self.hardButton.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: UIFont.Weight.bold)
         self.hardButton.layer.cornerRadius = self.hardButton.frame.size.height / 2
         self.hardButton.addTarget(self, action: #selector(HomeViewController.difficultyButtonPressed(sender:)), for: .touchUpInside)
         self.view.addSubview(self.hardButton)
@@ -174,7 +174,7 @@ class HomeViewController: UIViewController {
         self.startButton.backgroundColor = Settings.shared().getDisplayMode() == .Light ? .black : .white
         self.startButton.titleLabel?.textAlignment = .center
         self.startButton.setTitleColor(Settings.shared().getDisplayMode() == .Light ? .white : .black, for: .normal)
-        self.startButton.titleLabel?.font = UIFont(name: SharedValues.shared().getSanFranciscoBoldFont().getName(), size: 22)
+        self.startButton.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: UIFont.Weight.bold)
         self.startButton.layer.cornerRadius = self.startButton.frame.size.height / 2
         self.startButton.addTarget(self, action: #selector(HomeViewController.startGame(sender:)), for: .touchUpInside)
         self.view.addSubview(self.startButton)
@@ -187,14 +187,24 @@ class HomeViewController: UIViewController {
     }
     
     @objc func instrumentButtonPressed(sender: UIButton) {
-        if let title = sender.titleLabel?.text {
-            let instrumentType = InstrumentType(rawValue: title)!
-            self.selectedInstrument = self.instruments.first(where: {$0.getType() == instrumentType})!
-            self.pianoButton.isSelected = instrumentType == .Piano
-            self.guitarButton.isSelected = instrumentType == .Guitar
-            self.trumpetButton.isSelected = instrumentType == .Trumpet
-            self.playSound(forInstrument: self.selectedInstrument)
+        var instrumentType: InstrumentType!
+        switch sender.tag {
+        case 0:
+            instrumentType = InstrumentType.Piano
+        case 1:
+            instrumentType = InstrumentType.Guitar
+        case 2:
+            instrumentType = InstrumentType.Trumpet
+        default:
+            return
         }
+        
+        self.selectedInstrument = self.instruments.first(where: {$0.getType() == instrumentType})!
+        self.pianoButton.isSelected = instrumentType == .Piano
+        self.guitarButton.isSelected = instrumentType == .Guitar
+        self.trumpetButton.isSelected = instrumentType == .Trumpet
+        self.playSound(forInstrument: self.selectedInstrument)
+        
     }
     
     @objc func difficultyButtonPressed(sender: UIButton) {
@@ -208,7 +218,7 @@ class HomeViewController: UIViewController {
     
     @objc func startGame(sender: UIButton) {
         let gameViewController = GameViewController(withLevel: self.difficultyLevel, instrument: self.selectedInstrument)
-        self.present(gameViewController, animated: true, completion: nil)
+        self.present(gameViewController, animated: true)
     }
  
     private func playSound(forInstrument instrument: Instrument) {

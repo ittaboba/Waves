@@ -90,34 +90,6 @@ enum ButtonType {
     }
 }
 
-
-// MARK: Font
-public struct Font {
-    private var name: String
-    
-    init(name: String) {
-        self.name = name
-    }
-    
-    public func getName() -> String {
-        return self.name
-    }
-}
-
-enum FontType {
-    case SanFranciscoBold
-    case SanFranciscoHeavy
-    
-    func get() -> Font {
-        switch self {
-        case .SanFranciscoBold:
-            return Font(name: ".SFUIText-Bold")
-        case .SanFranciscoHeavy:
-            return Font(name: ".SFUIText-Heavy")
-        }
-    }
-}
-
 public class SharedValues {
     
     private static let sharedValues = SharedValues()
@@ -139,14 +111,4 @@ public class SharedValues {
         return self.dismissButton
     }
     
-    // fonts
-    private let sanFranciscoBoldFont = FontType.SanFranciscoBold.get()
-    public func getSanFranciscoBoldFont() -> Font {
-        return self.sanFranciscoBoldFont
-    }
-    
-    private let sanFranciscoHeavyFont = FontType.SanFranciscoHeavy.get()
-    public func getSanFranciscoHeavyFont() -> Font {
-        return self.sanFranciscoHeavyFont
-    }
 }

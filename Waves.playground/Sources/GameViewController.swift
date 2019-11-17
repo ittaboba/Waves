@@ -131,7 +131,7 @@ public class GameViewController: UIViewController {
         self.dismissButton.backgroundColor = Settings.shared().getDisplayMode() == .Light ? .black : .white
         self.dismissButton.titleLabel?.textAlignment = .center
         self.dismissButton.setTitleColor(Settings.shared().getDisplayMode() == .Light ? .white : .black, for: .normal)
-        self.dismissButton.titleLabel?.font = UIFont(name: SharedValues.shared().getSanFranciscoBoldFont().getName(), size: 22)
+        self.dismissButton.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: UIFont.Weight.bold)
         self.dismissButton.layer.cornerRadius = SharedValues.shared().getDismissButton().getHeight() / 2
         self.dismissButton.addTarget(self, action: #selector(GameViewController.dismissGame(sender:)), for: .touchUpInside)
         self.view.addSubview(self.dismissButton)
@@ -148,7 +148,7 @@ public class GameViewController: UIViewController {
         gameTitle.text = self.instrument.getType().rawValue
         gameTitle.textAlignment = .left
         gameTitle.textColor = Settings.shared().getDisplayMode() == .Light ? .black : .white
-        gameTitle.font = UIFont(name: SharedValues.shared().getSanFranciscoHeavyFont().getName(), size: 60)
+        gameTitle.font = UIFont.systemFont(ofSize: 60, weight: UIFont.Weight.heavy)
         gameTitle.backgroundColor = .clear
         self.view.addSubview(gameTitle)
         
@@ -158,7 +158,7 @@ public class GameViewController: UIViewController {
         self.listenButton.backgroundColor = Settings.shared().getDisplayMode() == .Light ? UIColor.black : UIColor.white
         self.listenButton.setTitleColor(Settings.shared().getDisplayMode() == .Light ? UIColor.white : UIColor.black, for: .normal)
         self.listenButton.layer.cornerRadius = self.listenButton.frame.size.height/2
-        self.listenButton.titleLabel?.font = UIFont(name: SharedValues.shared().getSanFranciscoBoldFont().getName(), size: 22)
+        self.listenButton.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: UIFont.Weight.bold)
         self.listenButton.addTarget(self, action: #selector(GameViewController.listenButtonPressed(sender:)), for: .touchUpInside)
         self.view.addSubview(self.listenButton)
         
@@ -168,7 +168,7 @@ public class GameViewController: UIViewController {
         self.playButton.backgroundColor = Settings.shared().getDisplayMode() == .Light ? UIColor.black : UIColor.white
         self.playButton.setTitleColor(Settings.shared().getDisplayMode() == .Light ? UIColor.white : UIColor.black, for: .normal)
         self.playButton.layer.cornerRadius = self.playButton.frame.size.height/2
-        self.playButton.titleLabel?.font = UIFont(name: SharedValues.shared().getSanFranciscoBoldFont().getName(), size: 22)
+        self.playButton.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: UIFont.Weight.bold)
         self.playButton.addTarget(self, action: #selector(GameViewController.playButtonPressed(sender:)), for: .touchUpInside)
         self.view.addSubview(self.playButton)
         
@@ -178,7 +178,7 @@ public class GameViewController: UIViewController {
         self.solutionButton.backgroundColor = Settings.shared().getDisplayMode() == .Light ? UIColor.black : UIColor.white
         self.solutionButton.setTitleColor(Settings.shared().getDisplayMode() == .Light ? UIColor.white : UIColor.black, for: .normal)
         self.solutionButton.layer.cornerRadius = self.solutionButton.frame.size.height/2
-        self.solutionButton.titleLabel?.font = UIFont(name: SharedValues.shared().getSanFranciscoBoldFont().getName(), size: 22)
+        self.solutionButton.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: UIFont.Weight.bold)
         self.solutionButton.addTarget(self, action: #selector(GameViewController.solutionButtonPressed(sender:)), for: .touchUpInside)
         self.view.addSubview(self.solutionButton)
     }
